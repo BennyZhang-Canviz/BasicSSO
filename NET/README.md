@@ -11,9 +11,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 1. Sign in to the Azure portal: [https://portal.azure.com/](https://portal.azure.com/).
 
-2. Choose your Azure AD tenant by selecting your account in the top right corner of the page:
-
-   ![](Images/aad-select-directory.png)
+2. Choose your Azure AD tenant by selecting your account in the top right corner of the page.
 
 3. Click **Azure Active Directory** -> **App registrations** -> **+Add**.
 
@@ -257,11 +255,11 @@ Debug the **EDUGraphAPI.Web**:
 
 10. Open **Web.config** file, add the following connection strings to **configuration**
 
-   ```xml
-    <connectionStrings>
-      <add name="DefaultConnection" connectionString="Data Source=|DataDirectory|BasicSSO.sdf" providerName="System.Data.SqlServerCe.4.0" />
-    </connectionStrings>
-   ```
+  ```xml
+   <connectionStrings>
+     <add name="DefaultConnection" connectionString="Data Source=|DataDirectory|BasicSSO.sdf" providerName="System.Data.SqlServerCe.4.0" />
+   </connectionStrings>
+  ```
 
 11. Find **appSetings** section, replace the **appSettings** using the following code.  
 
