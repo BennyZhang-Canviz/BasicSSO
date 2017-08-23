@@ -15,8 +15,6 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 3. Click **Azure Active Directory** -> **App registrations** -> **+Add**.
 
-   ![](Images/aad-create-app-01.png)
-
 4. Input a **Name**, and select **Web app / API** as **Application Type**.
 
    Input **Sign-on URL**: https://localhost:44377/
@@ -93,165 +91,167 @@ Debug the **EDUGraphAPI.Web**:
    ~~~
    ​
 
-7. On the **Model** folder, add two files named **AdalTokenCache.cs** and **ApplicationDbContext.cs** to store user cache.
+7. On the **Models** folder, add two files named **AdalTokenCache.cs** and **ApplicationDbContext.cs** to store user cache.
 
-8. Open **AdalTokenCache.cs**  file, delete all code and copy the following code to paste .
-~~~c#
+8. Open **AdalTokenCache.cs**  file, delete all code and copy the following code to paste.
+
        using Microsoft.IdentityModel.Clients.ActiveDirectory;
-       using System;
-       using System.Linq;
-       using System.Web.Security;
-       
-       namespace BasicSSO.Models
-       {
-           public class AdalTokenCache : TokenCache
-           {
-               private static readonly string MachinKeyProtectPurpose = "ADALCache";
-       
-               private string userId;
-       
-               public AdalTokenCache(string signedInUserId)
-               {
-                   this.userId = signedInUserId;
-                   this.AfterAccess = AfterAccessNotification;
-                   this.BeforeAccess = BeforeAccessNotification;
-       
-                   GetCahceAndDeserialize();
-               }
-       
-               public override void Clear()
-               {
-                   base.Clear();
-                   ClearUserTokenCache(userId);
-               }
-       
-               void BeforeAccessNotification(TokenCacheNotificationArgs args)
-               {
-                   GetCahceAndDeserialize();
-               }
-       
-               void AfterAccessNotification(TokenCacheNotificationArgs args)
-               {
-                   if (this.HasStateChanged)
-                   {
-                       SerializeAndUpdateCache();
-                       this.HasStateChanged = false;
-                   }
-               }
-       
-       
-               private void GetCahceAndDeserialize()
-               {
-                   var cacheBits = GetUserTokenCache(userId);
-                   if (cacheBits != null)
-                   {
-                       try
-                       {
-                           var data = MachineKey.Unprotect(cacheBits, MachinKeyProtectPurpose);
-                           this.Deserialize(data);
-                       }
-                       catch { }
-                   }
-               }
-       
-               private void SerializeAndUpdateCache()
-               {
-                   var cacheBits = MachineKey.Protect(this.Serialize(), MachinKeyProtectPurpose);
-                   UpdateUserTokenCache(userId, cacheBits);
-               }
-       
-       
-               private byte[] GetUserTokenCache(string userId)
-               {
-                   using (var db = new ApplicationDbContext())
-                   {
-                       var cache = GetUserTokenCache(db, userId);
-                       return cache != null ? cache.cacheBits : null;
-                   }
-               }
-       
-               private void UpdateUserTokenCache(string userId, byte[] cacheBits)
-               {
-                   using (var db = new ApplicationDbContext())
-                   {
-                       var cache = GetUserTokenCache(db, userId);
-                       if (cache == null)
-                       {
-                           cache = new UserTokenCache { webUserUniqueId = userId };
-                           db.UserTokenCacheList.Add(cache);
-                       }
-       
-                       cache.cacheBits = cacheBits;
-                       cache.LastWrite = DateTime.UtcNow;
-       
-                       db.SaveChanges();
-                   }
-               }
-       
-               private UserTokenCache GetUserTokenCache(ApplicationDbContext db, string userId)
-               {
-                   return db.UserTokenCacheList
-                          .OrderByDescending(i => i.LastWrite)
-                          .FirstOrDefault(c => c.webUserUniqueId == userId);
-               }
-       
-               private void ClearUserTokenCache(string userId)
-               {
-                   using (var db = new ApplicationDbContext())
-                   {
-                       var cacheEntries = db.UserTokenCacheList
-                           .Where(c => c.webUserUniqueId == userId)
-                           .ToArray();
-                       db.UserTokenCacheList.RemoveRange(cacheEntries);
-                       db.SaveChanges();
-                   }
-               }
-       
-               public static void ClearUserTokenCache()
-               {
-                   using (var db = new ApplicationDbContext())
-                   {
-                       var cacheEntries = db.UserTokenCacheList
-                           .ToArray();
-                       db.UserTokenCacheList.RemoveRange(cacheEntries);
-                       db.SaveChanges();
-                   }
-               }
-           }
-       }
-~~~
+              using System;
+              using System.Linq;
+              using System.Web.Security;
+              
+              namespace BasicSSO.Models
+              {
+                  public class AdalTokenCache : TokenCache
+                  {
+                      private static readonly string MachinKeyProtectPurpose = "ADALCache";
+              
+                      private string userId;
+              
+                      public AdalTokenCache(string signedInUserId)
+                      {
+                          this.userId = signedInUserId;
+                          this.AfterAccess = AfterAccessNotification;
+                          this.BeforeAccess = BeforeAccessNotification;
+              
+                          GetCacheAndDeserialize();
+                      }
+              
+                      public override void Clear()
+                      {
+                          base.Clear();
+                          ClearUserTokenCache(userId);
+                      }
+              
+                      void BeforeAccessNotification(TokenCacheNotificationArgs args)
+                      {
+                          GetCacheAndDeserialize();
+                      }
+              
+                      void AfterAccessNotification(TokenCacheNotificationArgs args)
+                      {
+                          if (this.HasStateChanged)
+                          {
+                              SerializeAndUpdateCache();
+                              this.HasStateChanged = false;
+                          }
+                      }
+              
+              
+                      private void GetCacheAndDeserialize()
+                      {
+                          var cacheBits = GetUserTokenCache(userId);
+                          if (cacheBits != null)
+                          {
+                              try
+                              {
+                                  var data = MachineKey.Unprotect(cacheBits, MachinKeyProtectPurpose);
+                                  this.Deserialize(data);
+                              }
+                              catch { }
+                          }
+                      }
+              
+                      private void SerializeAndUpdateCache()
+                      {
+                          var cacheBits = MachineKey.Protect(this.Serialize(), MachinKeyProtectPurpose);
+                          UpdateUserTokenCache(userId, cacheBits);
+                      }
+              
+              
+                      private byte[] GetUserTokenCache(string userId)
+                      {
+                          using (var db = new ApplicationDbContext())
+                          {
+                              var cache = GetUserTokenCache(db, userId);
+                              return cache != null ? cache.cacheBits : null;
+                          }
+                      }
+              
+                      private void UpdateUserTokenCache(string userId, byte[] cacheBits)
+                      {
+                          using (var db = new ApplicationDbContext())
+                          {
+                              var cache = GetUserTokenCache(db, userId);
+                              if (cache == null)
+                              {
+                                  cache = new UserTokenCache { webUserUniqueId = userId };
+                                  db.UserTokenCacheList.Add(cache);
+                              }
+              
+                              cache.cacheBits = cacheBits;
+                              cache.LastWrite = DateTime.UtcNow;
+              
+                              db.SaveChanges();
+                          }
+                      }
+              
+                      private UserTokenCache GetUserTokenCache(ApplicationDbContext db, string userId)
+                      {
+                          return db.UserTokenCacheList
+                                 .OrderByDescending(i => i.LastWrite)
+                                 .FirstOrDefault(c => c.webUserUniqueId == userId);
+                      }
+              
+                      private void ClearUserTokenCache(string userId)
+                      {
+                          using (var db = new ApplicationDbContext())
+                          {
+                              var cacheEntries = db.UserTokenCacheList
+                                  .Where(c => c.webUserUniqueId == userId)
+                                  .ToArray();
+                              db.UserTokenCacheList.RemoveRange(cacheEntries);
+                              db.SaveChanges();
+                          }
+                      }
+              
+                      public static void ClearUserTokenCache()
+                      {
+                          using (var db = new ApplicationDbContext())
+                          {
+                              var cacheEntries = db.UserTokenCacheList
+                                  .ToArray();
+                              db.UserTokenCacheList.RemoveRange(cacheEntries);
+                              db.SaveChanges();
+                          }
+                      }
+                  }
+              }
+
+
+
 9. Open **ApplicationDbContext.cs**  file,  delete all code and copy the following code to paste.
-~~~c#
+
        using System;
-       using System.ComponentModel.DataAnnotations;
-       using System.Data.Entity;
-       
-       namespace BasicSSO.Models
-       {
-           public class ApplicationDbContext : DbContext
-           {
-               public ApplicationDbContext()
-                   : base("DefaultConnection")
-               {
-               }
-       
-               public DbSet<UserTokenCache> UserTokenCacheList { get; set; }
-           }
-       
-           public class UserTokenCache
-           {
-               [Key]
-               public int UserTokenCacheId { get; set; }
-       
-               public string webUserUniqueId { get; set; }
-       
-               [MaxLength]
-               public byte[] cacheBits { get; set; }
-       
-               public DateTime LastWrite { get; set; }
-           }
-       }
-~~~
+              using System.ComponentModel.DataAnnotations;
+              using System.Data.Entity;
+              
+              namespace BasicSSO.Models
+              {
+                  public class ApplicationDbContext : DbContext
+                  {
+                      public ApplicationDbContext()
+                          : base("DefaultConnection")
+                      {
+                      }
+              
+                      public DbSet<UserTokenCache> UserTokenCacheList { get; set; }
+                  }
+              
+                  public class UserTokenCache
+                  {
+                      [Key]
+                      public int UserTokenCacheId { get; set; }
+              
+                      public string webUserUniqueId { get; set; }
+              
+                      [MaxLength]
+                      public byte[] cacheBits { get; set; }
+              
+                      public DateTime LastWrite { get; set; }
+                  }
+              }
+
 
 10. Open **Web.config** file, add the following connection strings to **configuration**
 
@@ -398,7 +398,7 @@ namespace BasicSSO.Controllers
 
     ![](Images/new-project-04.png)
 
-18. Press F5, hello world page is presented after login successfully . 
+18. Press F5, hello world page is presented after login successfully. 
 
     ![](Images/web-app-helloworld.png)
 
