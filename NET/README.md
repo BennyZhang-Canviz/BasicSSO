@@ -27,15 +27,15 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 5. Once completed, the app will show in the list.
 
-   ![](images/aad-create-app-03.png)
+   ![](Images/aad-create-app-03.png)
 
 6. Click it to view its details. 
 
-   ![](images/aad-create-app-04.png)
+   ![](Images/aad-create-app-04.png)
 
 7. Click **All settings**, if the setting window did not show.
 
-     ![](images/aad-create-app-05.png)
+     ![](Images/aad-create-app-05.png)
 
      Copy aside **Application ID**, then Click **Save**.
 
@@ -45,7 +45,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
      | ------------------------------ | ----------------------- | ----------------------------- |
      | Windows Azure Active Directory |                         | Sign in and read user profile |
 
-     ![](images/aad-create-app-06.png)
+     ![](Images/aad-create-app-06.png)
 
    * Click **Keys**, then add a new key
 
