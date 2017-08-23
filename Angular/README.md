@@ -13,7 +13,6 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 2. Choose your Azure AD tenant by selecting your account in the top right corner of the page:
 
-   ![](Images/aad-select-directory.png)
 
 3. Click **Azure Active Directory** -> **App registrations** -> **+Add**.
 
