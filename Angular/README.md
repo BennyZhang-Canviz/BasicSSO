@@ -167,7 +167,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 8. Delete the following files from project.
 
-   - **Typings** ,  **Scripts **,  **public** and **Views** folders
+   - **Typings** ,  **Scripts** ,  **public** and **Views** folders
    - **routes/index.ts** ,  **routes/user.ts** files
    - **typings.json** file
    - **README.md** file
