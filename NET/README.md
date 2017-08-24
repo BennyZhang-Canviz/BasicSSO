@@ -82,11 +82,14 @@ Debug the **EDUGraphAPI.Web**:
 
 6. Install **EntityFramework**, **EntityFramework.SqlServerCompact**  and  **Microsoft.IdentityModel.Clients.ActiveDirectory**.
 
+   ​
+
    ~~~c#
    Install-Package EntityFramework
    Install-Package EntityFramework.SqlServerCompact
    Install-Package Microsoft.IdentityModel.Clients.ActiveDirectory
    ~~~
+   ​
 
 7. On the **Models** folder, add two files named **AdalTokenCache.cs** and **ApplicationDbContext.cs** to store user cache.
 
