@@ -4,6 +4,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 **Table of contents**
 * [Register the application in Azure Active Directory](#register-the-application-in-azure-active-directory)
+* [Prerequisites](#Prerequisites)
 * [Build and debug locally](#build-and-debug-locally)
 
 
@@ -11,12 +12,10 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 1. Sign in to the Azure portal: [https://portal.azure.com/](https://portal.azure.com/).
 
-2. Choose your Azure AD tenant by selecting your account in the top right corner of the page:
+2. Choose your Azure AD tenant by selecting your account in the top right corner of the page.
 
 
 3. Click **Azure Active Directory** -> **App registrations** -> **+Add**.
-
-   ![](Images/aad-create-app-01.png)
 
 4. Input a **Name**, and select **Web app / API** as **Application Type**.
 
@@ -39,6 +38,12 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
      ![](Images/aad-create-app-05.png)
 
      Copy aside **Application ID**, then Click **Save**.
+
+   * Click **Reply URLs**, add the following URL into it.
+
+     [https://localhost:44380/auth/openid/return](https://YOUR HOST URL/auth/openid/return)
+
+     ​
 
    * Click **Required permissions**. Add the following permissions:
 
@@ -64,11 +69,11 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 - [TypeScript for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48593)
 
-- [Node.js](https://nodejs.org/)
+- [Node.js v6.11.2](https://nodejs.org/en/download/)
 
-- [Node.js Tools 1.3](https://nodejstools.codeplex.com/)
+- [Node.js Tools 1.3](https://github.com/Microsoft/nodejstools/releases/tag/v1.3)
 
-- [](https://git-scm.com/download/win)
+- [Git](https://git-scm.com/download/win)
 
   Familiarity with Node.js, TypeScript, Angular and web services.
 
@@ -158,12 +163,12 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
      },
    ```
 
-7. Select **npm**, right-click and select **Installing Missing npm Packages**
+7. Select **npm**, right-click and select **Install Missing npm Packages**
 
 8. Delete the following files from project.
 
-   - **Typings** , **Scripts **, **public** and **Views** folders
-   - **routes/index.ts** , **routes/user.ts** files
+   - **Typings** ,  **Scripts **,  **public** and **Views** folders
+   - **routes/index.ts** ,  **routes/user.ts** files
    - **typings.json** file
    - **README.md** file
 
@@ -223,6 +228,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     import * as Sequelize from 'sequelize';
     import * as Promise from "bluebird";
     import { Constants } from '../constants';
+    ```
 
 
     export interface TokenCacheAttributes {
@@ -233,19 +239,19 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     export interface TokenCacheInstance extends Sequelize.Instance<TokenCacheAttributes>, TokenCacheAttributes {
     }
     export interface TokenCacheModel extends Sequelize.Model<TokenCacheInstance, TokenCacheAttributes> { }
-
+    
     export class DbContext {
         public sequelize: Sequelize.Sequelize;
         public TokenCache: TokenCacheModel;
-
+    
         constructor() {
             this.init();
         }
-
+    
         public sync(options?: Sequelize.SyncOptions): Promise<any> {
             return this.sequelize.sync(options);
         }
-
+    
         private init() {
             this.sequelize = new Sequelize("", "", "", {
                 dialect: 'sqlite',
@@ -265,7 +271,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
                 });
         }
     }
-    ```
+    ​```
 
 
 17. Right-click project,  **Add ->New Folder** named **services**.
