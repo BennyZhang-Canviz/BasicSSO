@@ -82,14 +82,11 @@ Debug the **EDUGraphAPI.Web**:
 
 6. Install **EntityFramework**, **EntityFramework.SqlServerCompact**  and  **Microsoft.IdentityModel.Clients.ActiveDirectory**.
 
-   ​
-
    ~~~c#
    Install-Package EntityFramework
    Install-Package EntityFramework.SqlServerCompact
    Install-Package Microsoft.IdentityModel.Clients.ActiveDirectory
    ~~~
-   ​
 
 7. On the **Models** folder, add two files named **AdalTokenCache.cs** and **ApplicationDbContext.cs** to store user cache.
 
@@ -136,8 +133,8 @@ Debug the **EDUGraphAPI.Web**:
                               this.HasStateChanged = false;
                           }
                       }
-              
-              
+
+
                       private void GetCacheAndDeserialize()
                       {
                           var cacheBits = GetUserTokenCache(userId);
@@ -157,8 +154,8 @@ Debug the **EDUGraphAPI.Web**:
                           var cacheBits = MachineKey.Protect(this.Serialize(), MachinKeyProtectPurpose);
                           UpdateUserTokenCache(userId, cacheBits);
                       }
-              
-              
+
+
                       private byte[] GetUserTokenCache(string userId)
                       {
                           using (var db = new ApplicationDbContext())
