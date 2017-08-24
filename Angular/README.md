@@ -41,7 +41,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
    * Click **Reply URLs**, add the following URL into it.
 
-     [https://localhost:44380/auth/openid/return](https://YOUR HOST URL/auth/openid/return)
+     [https://localhost:44380/auth/openid/return](https://localhost:44380/auth/openid/return)
 
      ​
 
