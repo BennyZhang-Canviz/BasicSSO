@@ -1,0 +1,3 @@
+AAD:
+  ClientId: <%= ENV['ClientId'] %>
+  ClientSecret: <%= ENV['ClientSecret'] %>

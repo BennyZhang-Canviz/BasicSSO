@@ -1,0 +1,2 @@
+class TokenCache < ApplicationRecord
+end
