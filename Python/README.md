@@ -225,11 +225,6 @@ In the same file, edit **TEMPLATES** as below.
 6. Create a new folder named **models** in the same directory as `manage.py`. Create a new file named **auth.py** under **models** folder. Edit **auth.py**, delete all code and copy the following code to paste.
 
 
-    '''
-     *   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.  
-     *   * See LICENSE in the project root for license information.  
-    '''
-    
     import json
     import constant
     
