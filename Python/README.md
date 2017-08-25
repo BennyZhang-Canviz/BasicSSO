@@ -88,9 +88,9 @@ Make sure that Django can run on local machine. Otherwise following [this articl
 
 2.  Create a new folder named **templates** under **account** folder, and then create a new folder named **account** under **templates** folder. Under new created account folder create two files named **index.html** and **helloworld.html**.
 
-   ​		![proj02](Images/proj02.png)
+   ​			![proj02](Images/proj02.png)
 
-Edit **index.html**,  delete all code and copy the following code to paste.
+   Edit **index.html**,  delete all code and copy the following code to paste.
 
     <!DOCTYPE html>
     <html>
@@ -130,6 +130,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
     </html>
 3. Open **/account/views.py**, delete all code and copy the following code to paste.
 
+  ```python
   from django.conf import settings
   from django.contrib.auth import login as auth_login
   from django.contrib.auth import logout as auth_logout
@@ -157,22 +158,23 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
       return HttpResponseRedirect(o365_login_url)
 
   def o365_auth_callback(request):
-  ​    
+      
       AuthService.validate_state(request)
       code = request.POST.get('code')
       id_token = AuthService.get_id_token(request)
-      
+
       #Succeed get userinfo from Azure.
       o365_user_id = id_token.get('oid')
       tenant_id = id_token.get('tid')
-
+      
 
       template = loader.get_template('account/helloworld.html') 
       return HttpResponse(template.render({}))
 
 
   def logoff(request):
-      return HttpResponseRedirect('index')   
+      return HttpResponseRedirect('index')
+  ```
 
 4. Edit **Settings.py** under **/BasicSSO/BasicSSO** folder. Add **'account',** inside **INSTALLED_APPS**.
 
@@ -202,246 +204,273 @@ In the same file, edit **TEMPLATES** as below.
 	]
 5. Edit **urls.py** under **/BasicSSO/BasicSSO** folder. Delete all code and copy the following code to paste.
 
+    ```python
     from django.conf.urls import url
+
     from django.contrib import admin
+
     from account import views as account_views
 
     urlpatterns = [   
+
         url(r'^admin/', admin.site.urls), 
+
         url(r'^$', account_views.index, name='index'),   
+
         url(r'^Account/O365Login', account_views.o365_login, name='o365_login'),   
+
         url(r'^Account/LogOff', account_views.logoff, name='logoff'),
+
         url(r'^Auth/O365/Callback', account_views.o365_auth_callback, name='o365_auth_callback'),
+
     ]
+    ```
+
+    ​
+
 6. Create a new folder named **models** in the same directory as `manage.py`. Create a new file named **auth.py** under **models** folder. Edit **auth.py**, delete all code and copy the following code to paste.
 
 
-    '''
-     *   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.  
-     *   * See LICENSE in the project root for license information.  
-    '''
-    
-    import json
-    import constant
-    
-    class O365User(object):
-        def __init__(self, id=None, email=None, first_name=None, last_name=None, display_name=None, tenant_id=None, tenant_name=None, roles=None, photo=None):
-            self._id = id
-            self._email = email
-            self._first_name = first_name
-            self._last_name = last_name
-            self._display_name = display_name
-            self._tenant_id = tenant_id
-            self._tenant_name = tenant_name
-            self._roles = roles
-            self._photo = photo
-    
-        @property
-        def id(self):
-            return self._id
-    
-        @property
-        def email(self):
-            return self._email
-    
-        @property
-        def first_name(self):
-            return self._first_name
-    
-        @property
-        def last_name(self):
-            return self._last_name
-    
-        @property
-        def display_name(self):
-            return self._display_name
-    
-        @property
-        def tenant_id(self):
-            return self._tenant_id
-    
-        @property
-        def tenant_name(self):
-            return self._tenant_name
-    
-        @property
-        def roles(self):
-            return self._roles
-    
-        @property
-        def photo(self):
-            return self._photo
-    
-        def to_json(self):
-            return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
-    
-        @staticmethod
-        def from_json(value):
-            obj = O365User()
-            obj.__dict__.update(json.loads(value))
-            return obj
-    
-    class UnifiedUser(object):
-    
-        def __init__(self, request):
-            self._request = request
-            if constant.o365_user_session_key in self._request.session:
-                user_json = self._request.session[constant.o365_user_session_key]
-                self._o365_user = O365User.from_json(user_json)
+```python
+'''
+ *   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.  
+ *   * See LICENSE in the project root for license information.  
+'''
+
+import json
+import constant
+
+class O365User(object):
+    def __init__(self, id=None, email=None, first_name=None, last_name=None, display_name=None, tenant_id=None, tenant_name=None, roles=None, photo=None):
+        self._id = id
+        self._email = email
+        self._first_name = first_name
+        self._last_name = last_name
+        self._display_name = display_name
+        self._tenant_id = tenant_id
+        self._tenant_name = tenant_name
+        self._roles = roles
+        self._photo = photo
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def email(self):
+        return self._email
+
+    @property
+    def first_name(self):
+        return self._first_name
+
+    @property
+    def last_name(self):
+        return self._last_name
+
+    @property
+    def display_name(self):
+        return self._display_name
+
+    @property
+    def tenant_id(self):
+        return self._tenant_id
+
+    @property
+    def tenant_name(self):
+        return self._tenant_name
+
+    @property
+    def roles(self):
+        return self._roles
+
+    @property
+    def photo(self):
+        return self._photo
+
+    def to_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+    @staticmethod
+    def from_json(value):
+        obj = O365User()
+        obj.__dict__.update(json.loads(value))
+        return obj
+
+class UnifiedUser(object):
+
+    def __init__(self, request):
+        self._request = request
+        if constant.o365_user_session_key in self._request.session:
+            user_json = self._request.session[constant.o365_user_session_key]
+            self._o365_user = O365User.from_json(user_json)
+        else:
+            self._o365_user = None
+
+    @property
+    def is_authenticated(self):
+        return self.o365_user is not None or self.local_user.is_authenticated
+
+    @property
+    def are_linked(self):
+        return self.o365_user is not None and self.local_user.is_authenticated
+
+    @property
+    def is_admin(self):
+        return self.o365_user is not None and constant.Roles.Admin in self.o365_user.roles
+
+    @property
+    def is_teacher(self):
+        return self.o365_user is not None and constant.Roles.Faculty in self.o365_user.roles
+
+    @property
+    def is_student(self):
+        return self.o365_user is not None and constant.Roles.Student in self.o365_user.roles
+
+    @property
+    def email(self):
+        return self.local_user.email
+
+    @property
+    def o365_email(self):
+        return self.o365_user.email
+
+    @property
+    def o365_user_id(self):
+        return self.o365_user.id
+
+    @property
+    def user_id(self):
+        return self.local_user.id
+
+    @property
+    def tenant_id(self):
+        return self.o365_user.tenant_id
+
+    @property
+    def is_local(self):
+        return self.o365_user is None
+
+    @property
+    def is_o365(self):
+        return not self.local_user.is_authenticated
+
+    @property
+    def display_name(self):
+        user = self.o365_user
+        if not user and self.local_user.is_authenticated:
+            user = self.local_user
+        if user:
+            if user.first_name and user.last_name:
+                return "%s %s" % (user.first_name, user.last_name)
             else:
-                self._o365_user = None
-    
-        @property
-        def is_authenticated(self):
-            return self.o365_user is not None or self.local_user.is_authenticated
-    
-        @property
-        def are_linked(self):
-            return self.o365_user is not None and self.local_user.is_authenticated
-    
-        @property
-        def is_admin(self):
-            return self.o365_user is not None and constant.Roles.Admin in self.o365_user.roles
-    
-        @property
-        def is_teacher(self):
-            return self.o365_user is not None and constant.Roles.Faculty in self.o365_user.roles
-    
-        @property
-        def is_student(self):
-            return self.o365_user is not None and constant.Roles.Student in self.o365_user.roles
-    
-        @property
-        def email(self):
-            return self.local_user.email
-    
-        @property
-        def o365_email(self):
-            return self.o365_user.email
-    
-        @property
-        def o365_user_id(self):
-            return self.o365_user.id
-    
-        @property
-        def user_id(self):
-            return self.local_user.id
-    
-        @property
-        def tenant_id(self):
-            return self.o365_user.tenant_id
-    
-        @property
-        def is_local(self):
-            return self.o365_user is None
-    
-        @property
-        def is_o365(self):
-            return not self.local_user.is_authenticated
-    
-        @property
-        def display_name(self):
-            user = self.o365_user
-            if not user and self.local_user.is_authenticated:
-                user = self.local_user
-            if user:
-                if user.first_name and user.last_name:
-                    return "%s %s" % (user.first_name, user.last_name)
-                else:
-                    return user.email
-            return ''
-    
-        @property
-        def main_role(self):
-            if not self.o365_user:
-                return None
-            roles = self.o365_user.roles
-            for role in [constant.Roles.Admin, constant.Roles.Faculty, constant.Roles.Student]:
-                if role in roles:
-                    return role
+                return user.email
+        return ''
+
+    @property
+    def main_role(self):
+        if not self.o365_user:
             return None
-    
-        @property
-        def photo(self):
-            if not self.o365_user:
-                return None
-            return self.o365_user.photo
-    
-        @property
-        def local_user(self):
-            return self._request.user
-    
-        @property
-        def o365_user(self):
-            return self._o365_user
+        roles = self.o365_user.roles
+        for role in [constant.Roles.Admin, constant.Roles.Faculty, constant.Roles.Student]:
+            if role in roles:
+                return role
+        return None
+
+    @property
+    def photo(self):
+        if not self.o365_user:
+            return None
+        return self.o365_user.photo
+
+    @property
+    def local_user(self):
+        return self._request.user
+
+    @property
+    def o365_user(self):
+        return self._o365_user
+```
 7. Create a new folder named **services** in the same directory as `manage.py`. Create a new file named **auth_service.py** under **services** folder. Edit **auth_service.py**, delete all code and copy the following code to paste.
 
-      
+     
 
+    ```python
     import urllib
+
     import constant
+
     import uuid
+
     import jwt
+
     import requests
+
     from models.auth import O365User, UnifiedUser
 
     class AuthService(object):
 
-        @staticmethod
-        def get_redirect_uri(request, relative_redirect_uri):
-            scheme = request.scheme
-            host = request.get_host()
-            return '%s://%s/%s' % (scheme, host, relative_redirect_uri)
-        
-        @staticmethod
-        def get_authorization_url(request, response_type, relative_redirect_uri, state, extra_params = None):
-            params  = {
-                'client_id' : constant.client_id,
-                'response_type': response_type,
-                'response_mode': 'form_post',
-                'redirect_uri': AuthService.get_redirect_uri(request, relative_redirect_uri),
-                'state': state
-                }
-            if extra_params:
-                params.update(extra_params)
-            request.session['auth_state'] = state
-            nonce = params.get('nonce')
-            if nonce:
-                request.session['auth_nonce'] = nonce
-            return constant.login_base_uri + urllib.parse.urlencode(params).replace('%2B', '+')
-        
-        @staticmethod
-        def get_random_string():
-            return uuid.uuid4().hex
-        
-        @staticmethod
-        def validate_state(request):
-            if request.POST.get('state') != request.session.get('auth_state'):
-                raise Exception('state does not match')
-        
-        @staticmethod
-        def get_id_token(request):
-            id_token = request.POST.get('id_token')
-            return jwt.decode(id_token, verify=False)
-        
-        @staticmethod
-        def get_current_user(request):
-            return UnifiedUser(request)
-        
-        @staticmethod
-        def set_o365_user(request, o365_user):
-            request.session[constant.o365_user_session_key] = o365_user.to_json()
-        
-        @staticmethod
-        def clear_o365_user(request):
-            if constant.o365_user_session_key in request.session:
-                del request.session[constant.o365_user_session_key]
+    @staticmethod
+    def get_redirect_uri(request, relative_redirect_uri):
+        scheme = request.scheme
+        host = request.get_host()
+        return '%s://%s/%s' % (scheme, host, relative_redirect_uri)
+
+    @staticmethod
+    def get_authorization_url(request, response_type, relative_redirect_uri, state, extra_params = None):
+        params  = {
+            'client_id' : constant.client_id,
+            'response_type': response_type,
+            'response_mode': 'form_post',
+            'redirect_uri': AuthService.get_redirect_uri(request, relative_redirect_uri),
+            'state': state
+            }
+        if extra_params:
+            params.update(extra_params)
+        request.session['auth_state'] = state
+        nonce = params.get('nonce')
+        if nonce:
+            request.session['auth_nonce'] = nonce
+        return constant.login_base_uri + urllib.parse.urlencode(params).replace('%2B', '+')
+
+    @staticmethod
+    def get_random_string():
+        return uuid.uuid4().hex
+
+    @staticmethod
+    def validate_state(request):
+        if request.POST.get('state') != request.session.get('auth_state'):
+            raise Exception('state does not match')
+
+    @staticmethod
+    def get_id_token(request):
+        id_token = request.POST.get('id_token')
+        return jwt.decode(id_token, verify=False)
+
+    @staticmethod
+    def get_current_user(request):
+        return UnifiedUser(request)
+
+    @staticmethod
+    def set_o365_user(request, o365_user):
+        request.session[constant.o365_user_session_key] = o365_user.to_json()
+
+    @staticmethod
+    def clear_o365_user(request):
+        if constant.o365_user_session_key in request.session:
+            del request.session[constant.o365_user_session_key]
+    ```
+
 8. create a new file named **constant.py** in the same directory as `manage.py`. Edit it, delete all code and copy the following code to paste.
 
+    ```python
     '''
-     *   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
-     *   * See LICENSE in the project root for license information.
-        '''
+
+     \*   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+
+     \*   * See LICENSE in the project root for license information.
+
+    '''
 
     import os
 
@@ -449,8 +478,7 @@ In the same file, edit **TEMPLATES** as below.
 
     client_secret = os.environ['ClientSecret']
 
-    ​
-
+    source_code_repository_url = os.environ["SourceCodeRepositoryUrl"]
 
     authority = 'https://login.microsoftonline.com/common/'
 
@@ -462,7 +490,6 @@ In the same file, edit **TEMPLATES** as below.
 
     company_admin_role_name = "Company Administrator"
 
-
     o365_username_cookie = "O365CookieUsername"
 
     o365_email_cookie = "O365CookieEmail"
@@ -470,24 +497,61 @@ In the same file, edit **TEMPLATES** as below.
     o365_user_session_key = '_o365_user'
 
     favorite_colors = [
+
         {'value':'#2F19FF', 'name':'Blue'}, 
+
         {'value':'#127605', 'name':'Green'}, 
+
         {'value':'#535353', 'name':'Grey'}
+
     ]
 
-
     class Resources():
+
         AADGraph = "https://graph.windows.net/"
+
         MSGraph = "https://graph.microsoft.com/"
+
         MSGraph_VERSION  ='beta'
 
-9. Open command and then locate to the same directory as `manage.py`. Run below commands one by one. 
+    class Roles():
 
-`Python manage.py migrate`
+        Admin = "Admin"
 
-`env.bat`
+        Faculty = "Teacher"
 
-`Python manage.py runserver`
+        Student = "Student"
+
+    class O365ProductLicenses():
+
+        \#Microsoft Classroom Preview
+
+        Classroom = "80f12768-d8d9-4e93-99a8-fa2464374d34"
+
+        \#Office 365 Education for faculty
+
+        Faculty = "94763226-9b3c-4e75-a931-5c89701abe66"
+
+        \#Office 365 Education for students
+
+        Student = "314c4481-f395-4525-be8b-2ec4bb1e9d91"
+
+        \#Office 365 Education for faculty
+
+        FacultyPro = "78e66a63-337a-4a9a-8959-41c6654dfb56"
+
+        \#Office 365 Education for students
+
+        StudentPro = "e82ae690-a2d5-4d76-8d30-7c6e01e6022e"
+    ```
+
+    Open command and then locate to the same directory as `manage.py`. Run below commands one by one. 
+
+    `Python manage.py migrate`
+
+    `env.bat`
+
+    `Python manage.py runserver`
 
 Open the browser and then go to http://127.0.0.1:8000, the site is opened. After login with O365 account it will show Hello world.
 
