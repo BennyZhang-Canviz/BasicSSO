@@ -4,7 +4,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 **Table of contents**
 * [Register the application in Azure Active Directory](#register-the-application-in-azure-active-directory)
-* [Prerequistites](#Prerequistites)
+* [Prerequisites](#Prerequisites)
 * [Build and debug locally](#build-and-debug-locally)
 
 
@@ -39,6 +39,10 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
      ![](Images/aad-create-app-05.png)
 
      Copy aside **Application ID**, then Click **Save**.
+
+   * Click **Reply URLs**, add the following URL into it.
+
+     [http://localhost:3000/auth/azure_oauth2/callback](http://localhost:3000/auth/azure_oauth2/callback)
 
    * Click **Required permissions**. Add the following permissions:
 
@@ -77,43 +81,43 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 2. This will create a Rails application called **basicsso** in directory.
 
-3. Close terminal window, copy the files of [Lab Files](/Lab Files) folder into **basicsso** root folder:
+3. Close terminal window, copy below file of [Lab Files](Lab Files) folder into **basicsso** root folder:
 
    - Gemfile
 
-4. Copy the following files of [Lab Files](/Lab Files)  into **basicsso/app/assets/javascripts** folder:
+4. Copy the following files of [Lab Files](Lab Files)  into **basicsso/app/assets/javascripts** folder:
 
   - app/assets/javascripts/application.js
   - app/assets/javascripts/jqueryval.js
-  -  app/assets/javascripts/site.js
+  - app/assets/javascripts/site.js
 
-5. Copy the following folder of [Lab Files](/Lab Files)  into **basicsso** to replace **/app/assets/stylesheets** folder:
+5. Copy the following folder of [Lab Files](Lab Files)  into **basicsso** to replace **/app/assets/stylesheets** folder:
 
   - app/assets/stylesheets
 
-6. Copy the following files of [Lab Files](/Lab Files)  into **basicsso/app/helpers** folder:
+6. Copy the following files of [Lab Files](Lab Files)  into **basicsso/app/helpers** folder:
 
   - app/helpers/application_helper.rb
 
-7. Copy the following files of [Lab Files](/Lab Files)  into **basicsso/config** folder:
+7. Copy the following files of [Lab Files](Lab Files)  into **basicsso/config** folder:
 
   - config/application.rb
   - config/settings.yml
 
-8. Copy the following files of [Lab Files](/Lab Files)  into **basicsso/config/initializers** folder:
+8. Copy the following files of [Lab Files](Lab Files)  into **basicsso/config/initializers** folder:
 
   - config/initializers/assets.rb
   - config/initializers/omniauth.rb
   - config/initializers/session_store.rb
 
-9. Copy the following files of [Lab Files](/Lab Files)  into **basicsso/lib** folder:
+9. Copy the following file and folder of [Lab Files](Lab Files)  into **basicsso/lib** folder:
 
    - lib/exceptions.rb
    - lib/omniauth
 
 10. Use vscode open **basicsso** folder:
 
-   ![](Images/new-project-02.png)
+  ![](Images/new-project-02.png)
 
 11. Open **app/controllers/application_controller.rb** file, delete all code and  add the following code into it.
 
@@ -194,9 +198,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
         self.azure_oauth2_logout_required = true
         redirect_to account_index_path
       end
-
-
-      def logoff
+       def logoff
         azure_oauth2_logout_required = self.azure_oauth2_logout_required 
 
         session.clear
@@ -214,6 +216,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
     end
     ```
+
 
 13. Open **app/views/layouts/application.html.erb** file, delete all code and  add the following code into it.
 
@@ -440,7 +443,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     end
     ```
 
-22. Add new file named **azure_oauth2.rb** into **lib/omniauth/strategies** folder, add the following code into it .
+22. Add new file named **azure_oauth2.rb** into **lib/omniauth/strategies** folder, add the following code into it.
 
     ```ruby
     require 'omniauth/strategies/oauth2'
@@ -526,7 +529,9 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 23. Delete the file named **Gemfile.lock** in the root folder of **basicsso**.
 
-24. Type the following command to set ClientId and ClientSecret and run
+24. Open a terminal, navigate to **basicsso** directory again. 
+
+25. Type the following command to set ClientId and ClientSecret and run
 
     ```rails
     export ClientId=INSERT YOUR CLIENT ID HERE
@@ -552,13 +557,19 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     rails db:schema:load
     ```
 
-25. Open a browser window and navigate to [http://localhost:3000](http://localhost:3000/).
+25. Type the following command to run server.
 
-26. Press F5, click **Sign In with Office 365** button to sign in.
+    ```rails
+    rails s
+    ```
+
+26. Open a browser window and navigate to [http://localhost:3000](http://localhost:3000/).
+
+27. Press F5, click **Sign In with Office 365** button to sign in.
 
     ![](Images/new-project-04.png)
 
-27. Hello world page is presented after login successfully . 
+28. Hello world page is presented after login successfully. 
 
     ![](Images/web-app-helloworld.png)
 
