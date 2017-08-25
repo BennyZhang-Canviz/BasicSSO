@@ -88,7 +88,7 @@ Make sure that Django can run on local machine. Otherwise following [this articl
 
 2.  Create a new folder named **templates** under **account** folder, and then create a new folder named **account** under **templates** folder. Under new created account folder create two files named **index.html** and **helloworld.html**.
 
-   ​			![proj02](Images/proj02.png)
+   ​					![proj02](Images/proj02.png)
 
    Edit **index.html**,  delete all code and copy the following code to paste.
 
@@ -182,7 +182,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
 
 In the same file, comment **'django.middleware.csrf.CsrfViewMiddleware',** inside **MIDDLEWARE**.
 
-​    			 ![proj04](Images/proj04.png)
+​    				 ![proj04](Images/proj04.png)
 
 In the same file, edit **TEMPLATES** as below.
 
@@ -465,11 +465,8 @@ class UnifiedUser(object):
 
     ```python
     '''
-
-     \*   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
-
-     \*   * See LICENSE in the project root for license information.
-
+     *   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
+     *   * See LICENSE in the project root for license information.
     '''
 
     import os
@@ -479,6 +476,7 @@ class UnifiedUser(object):
     client_secret = os.environ['ClientSecret']
 
     source_code_repository_url = os.environ["SourceCodeRepositoryUrl"]
+
 
     authority = 'https://login.microsoftonline.com/common/'
 
@@ -490,6 +488,7 @@ class UnifiedUser(object):
 
     company_admin_role_name = "Company Administrator"
 
+
     o365_username_cookie = "O365CookieUsername"
 
     o365_email_cookie = "O365CookieEmail"
@@ -497,51 +496,32 @@ class UnifiedUser(object):
     o365_user_session_key = '_o365_user'
 
     favorite_colors = [
-
         {'value':'#2F19FF', 'name':'Blue'}, 
-
         {'value':'#127605', 'name':'Green'}, 
-
         {'value':'#535353', 'name':'Grey'}
-
     ]
 
+
     class Resources():
-
         AADGraph = "https://graph.windows.net/"
-
         MSGraph = "https://graph.microsoft.com/"
-
         MSGraph_VERSION  ='beta'
 
     class Roles():
-
         Admin = "Admin"
-
         Faculty = "Teacher"
-
         Student = "Student"
 
     class O365ProductLicenses():
-
-        \#Microsoft Classroom Preview
-
+        #Microsoft Classroom Preview
         Classroom = "80f12768-d8d9-4e93-99a8-fa2464374d34"
-
-        \#Office 365 Education for faculty
-
+        #Office 365 Education for faculty
         Faculty = "94763226-9b3c-4e75-a931-5c89701abe66"
-
-        \#Office 365 Education for students
-
+        #Office 365 Education for students
         Student = "314c4481-f395-4525-be8b-2ec4bb1e9d91"
-
-        \#Office 365 Education for faculty
-
+        #Office 365 Education for faculty
         FacultyPro = "78e66a63-337a-4a9a-8959-41c6654dfb56"
-
-        \#Office 365 Education for students
-
+        #Office 365 Education for students
         StudentPro = "e82ae690-a2d5-4d76-8d30-7c6e01e6022e"
     ```
 
