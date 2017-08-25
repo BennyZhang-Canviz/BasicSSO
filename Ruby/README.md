@@ -50,7 +50,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
      | ------------------------------ | ----------------------- | ----------------------------- |
      | Windows Azure Active Directory |                         | Sign in and read user profile |
 
-     ![](/Images/aad-create-app-06.png)
+     ![](Images/aad-create-app-06.png)
 
    * Click **Keys**, then add a new key
 
