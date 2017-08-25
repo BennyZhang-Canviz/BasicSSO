@@ -83,32 +83,32 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 3. Close terminal window, copy below file of [Lab Files](Lab Files) folder into **basicsso** root folder:
 
-  - Gemfile
+   - Gemfile
 
 4. Copy the following files of [Lab Files](Lab Files)  into **basicsso/app/assets/javascripts** folder:
 
-  - app/assets/javascripts/application.js
-  - app/assets/javascripts/jqueryval.js
-  - app/assets/javascripts/site.js
+   - app/assets/javascripts/application.js
+   - app/assets/javascripts/jqueryval.js
+   - app/assets/javascripts/site.js
 
 5. Copy the following folder of [Lab Files](Lab Files)  into **basicsso** to replace **/app/assets/stylesheets** folder:
 
-  - app/assets/stylesheets
+   - app/assets/stylesheets
 
 6. Copy the following files of [Lab Files](Lab Files)  into **basicsso/app/helpers** folder:
 
-  - app/helpers/application_helper.rb
+   - app/helpers/application_helper.rb
 
 7. Copy the following files of [Lab Files](Lab Files)  into **basicsso/config** folder:
 
-  - config/application.rb
-  - config/settings.yml
+   - config/application.rb
+   - config/settings.yml
 
 8. Copy the following files of [Lab Files](Lab Files)  into **basicsso/config/initializers** folder:
 
-  - config/initializers/assets.rb
-  - config/initializers/omniauth.rb
-  - config/initializers/session_store.rb
+   - config/initializers/assets.rb
+   - config/initializers/omniauth.rb
+   - config/initializers/session_store.rb
 
 9. Copy the following file and folder of [Lab Files](Lab Files)  into **basicsso/lib** folder:
 
