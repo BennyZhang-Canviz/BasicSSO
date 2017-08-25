@@ -88,11 +88,9 @@ Make sure that Django can run on local machine. Otherwise following [this articl
 
 2.  Create a new folder named **templates** under **account** folder, and then create a new folder named **account** under **templates** folder. Under new created account folder create two files named **index.html** and **helloworld.html**.
 
-   ​				![proj02](Images/proj02.png)
+   ​					![proj02](Images/proj02.png)
 
-   ​
-
-   Edit **index.html**,  delete all code and copy the following code to paste.	
+   Edit **index.html**,  delete all code and copy the following code to paste.
 
     <!DOCTYPE html>
     <html>
@@ -184,7 +182,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
 
    In the same file, comment **'django.middleware.csrf.CsrfViewMiddleware',** inside **MIDDLEWARE**.
 
-​				![proj04](Images/proj04.png)
+​    				 ![proj04](Images/proj04.png)
 
 In the same file, edit **TEMPLATES** as below.
 
