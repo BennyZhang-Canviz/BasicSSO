@@ -182,7 +182,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
 
    ​	![proj03](Images/proj03.png)	
 
-In the same file, comment **'django.middleware.csrf.CsrfViewMiddleware',** inside **MIDDLEWARE**.
+   In the same file, comment **'django.middleware.csrf.CsrfViewMiddleware',** inside **MIDDLEWARE**.
 
 ​				![proj04](Images/proj04.png)
 
