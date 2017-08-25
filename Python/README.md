@@ -75,7 +75,6 @@ Make sure that Django can run on local machine. Otherwise following [this articl
 2. Creating the account app
 
    To create your app, make sure you’re in the same directory as `manage.py` and type this command:
-
    `python manage.py startapp account`
 
 #### Update source code
@@ -130,6 +129,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
     </html>
 3. Open **/account/views.py**, delete all code and copy the following code to paste.
 
+<<<<<<< HEAD
   ```python
   from django.conf import settings
   from django.contrib.auth import login as auth_login
@@ -176,6 +176,51 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
       return HttpResponseRedirect('index')
   ```
 
+=======
+	from django.conf import settings
+	from django.contrib.auth import login as auth_login
+	from django.contrib.auth import logout as auth_logout
+	from django.contrib.auth import authenticate as auth_authenticate
+	from django.http import HttpResponse, HttpResponseRedirect
+	from django.template import RequestContext, loader
+	
+	
+	from services.auth_service import AuthService
+	# Create your views here.
+	def index(request):   
+	    template = loader.get_template('account/index.html') 
+	    return HttpResponse(template.render({}, request))
+	
+	
+	def o365_login(request):
+	    extra_params = {
+	        'scope': 'openid+profile',
+	        'nonce': AuthService.get_random_string(),
+	        'prompt':'login'
+	    }
+	    
+	    o365_login_url = AuthService.get_authorization_url(request, 'code+id_token', 'Auth/O365/Callback', AuthService.get_random_string(), extra_params)
+	    settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+	    return HttpResponseRedirect(o365_login_url)
+	
+	def o365_auth_callback(request):
+	    
+	    AuthService.validate_state(request)
+	    code = request.POST.get('code')
+	    id_token = AuthService.get_id_token(request)
+	
+	    #Succeed get userinfo from Azure.
+	    o365_user_id = id_token.get('oid')
+	    tenant_id = id_token.get('tid')
+	    
+	
+	    template = loader.get_template('account/helloworld.html') 
+	    return HttpResponse(template.render({}))
+	
+	
+	def logoff(request):
+	    return HttpResponseRedirect('index')   
+>>>>>>> parent of ead4dd2... Format document.
 4. Edit **Settings.py** under **/BasicSSO/BasicSSO** folder. Add **'account',** inside **INSTALLED_APPS**.
 
    ​	![proj03](Images/proj03.png)	
@@ -186,7 +231,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
 
 In the same file, edit **TEMPLATES** as below.
 
-
+	
 	TEMPLATES = [
 	    {
 	        'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -210,7 +255,7 @@ In the same file, edit **TEMPLATES** as below.
     from django.contrib import admin
 
     from account import views as account_views
-
+    
     urlpatterns = [   
 
         url(r'^admin/', admin.site.urls), 
@@ -371,6 +416,7 @@ class UnifiedUser(object):
     def main_role(self):
         if not self.o365_user:
             return None
+<<<<<<< HEAD
         roles = self.o365_user.roles
         for role in [constant.Roles.Admin, constant.Roles.Faculty, constant.Roles.Student]:
             if role in roles:
@@ -396,6 +442,26 @@ class UnifiedUser(object):
      
 
     ```python
+=======
+    
+        @property
+        def photo(self):
+            if not self.o365_user:
+                return None
+            return self.o365_user.photo
+    
+        @property
+        def local_user(self):
+            return self._request.user
+    
+        @property
+        def o365_user(self):
+            return self._o365_user
+7. Create a new folder named **services** in the same directory as `manage.py`. Create a new file named **auth_service.py** under **models** folder. Edit **auth_service.py**, delete all code and copy the following code to paste.
+
+    
+    
+>>>>>>> parent of ead4dd2... Format document.
     import urllib
 
     import constant
@@ -407,8 +473,9 @@ class UnifiedUser(object):
     import requests
 
     from models.auth import O365User, UnifiedUser
-
+    
     class AuthService(object):
+<<<<<<< HEAD
 
     @staticmethod
     def get_redirect_uri(request, relative_redirect_uri):
@@ -461,6 +528,58 @@ class UnifiedUser(object):
             del request.session[constant.o365_user_session_key]
     ```
 
+=======
+    
+        @staticmethod
+        def get_redirect_uri(request, relative_redirect_uri):
+            scheme = request.scheme
+            host = request.get_host()
+            return '%s://%s/%s' % (scheme, host, relative_redirect_uri)
+    
+        @staticmethod
+        def get_authorization_url(request, response_type, relative_redirect_uri, state, extra_params = None):
+            params  = {
+                'client_id' : constant.client_id,
+                'response_type': response_type,
+                'response_mode': 'form_post',
+                'redirect_uri': AuthService.get_redirect_uri(request, relative_redirect_uri),
+                'state': state
+                }
+            if extra_params:
+                params.update(extra_params)
+            request.session['auth_state'] = state
+            nonce = params.get('nonce')
+            if nonce:
+                request.session['auth_nonce'] = nonce
+            return constant.login_base_uri + urllib.parse.urlencode(params).replace('%2B', '+')
+    
+        @staticmethod
+        def get_random_string():
+            return uuid.uuid4().hex
+    
+        @staticmethod
+        def validate_state(request):
+            if request.POST.get('state') != request.session.get('auth_state'):
+                raise Exception('state does not match')
+    
+        @staticmethod
+        def get_id_token(request):
+            id_token = request.POST.get('id_token')
+            return jwt.decode(id_token, verify=False)
+    
+        @staticmethod
+        def get_current_user(request):
+            return UnifiedUser(request)
+    
+        @staticmethod
+        def set_o365_user(request, o365_user):
+            request.session[constant.o365_user_session_key] = o365_user.to_json()
+    
+        @staticmethod
+        def clear_o365_user(request):
+            if constant.o365_user_session_key in request.session:
+                del request.session[constant.o365_user_session_key]
+>>>>>>> parent of ead4dd2... Format document.
 8. create a new file named **constant.py** in the same directory as `manage.py`. Edit it, delete all code and copy the following code to paste.
 
     ```python
@@ -468,44 +587,56 @@ class UnifiedUser(object):
      *   * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
      *   * See LICENSE in the project root for license information.
     '''
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> parent of ead4dd2... Format document.
     import os
-
+    
     client_id = os.environ['ClientId']
-
+    
     client_secret = os.environ['ClientSecret']
+<<<<<<< HEAD
 
     source_code_repository_url = os.environ["SourceCodeRepositoryUrl"]
 
 
+=======
+    
+    
+    
+    
+>>>>>>> parent of ead4dd2... Format document.
     authority = 'https://login.microsoftonline.com/common/'
-
+    
     login_base_uri = 'https://login.microsoftonline.com/common/oauth2/authorize?'
-
+    
     log_out_url = 'https://login.microsoftonline.com/common/oauth2/logout?redirect_uri=%s&post_logout_redirect_uri=%s'
-
+    
     microsoft_certs_uri = 'https://login.microsoftonline.com/common/discovery/v2.0/keys'
-
+    
     company_admin_role_name = "Company Administrator"
-
-
+    
+    
     o365_username_cookie = "O365CookieUsername"
-
+    
     o365_email_cookie = "O365CookieEmail"
-
+    
     o365_user_session_key = '_o365_user'
-
+    
     favorite_colors = [
         {'value':'#2F19FF', 'name':'Blue'}, 
         {'value':'#127605', 'name':'Green'}, 
         {'value':'#535353', 'name':'Grey'}
     ]
-
-
+    
+    
     class Resources():
         AADGraph = "https://graph.windows.net/"
         MSGraph = "https://graph.microsoft.com/"
         MSGraph_VERSION  ='beta'
+<<<<<<< HEAD
 
     class Roles():
         Admin = "Admin"
@@ -526,6 +657,11 @@ class UnifiedUser(object):
     ```
 
     Open command and then locate to the same directory as `manage.py`. Run below commands one by one. 
+=======
+    
+    
+9. Open command and then locate to the same directory as `manage.py`. Run below commands one by one. 
+>>>>>>> parent of ead4dd2... Format document.
 
     `Python manage.py migrate`
 
