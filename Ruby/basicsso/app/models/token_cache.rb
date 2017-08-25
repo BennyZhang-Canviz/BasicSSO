@@ -1,2 +1,0 @@
-class TokenCache < ApplicationRecord
-end
