@@ -4,7 +4,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 **Table of contents**
 * [Register the application in Azure Active Directory](#register-the-application-in-azure-active-directory)
-* [Prerequisites](#Prerequisites)
+* [Prerequisites](#prerequisites)
 * [Build and debug locally](#build-and-debug-locally)
 
 
@@ -165,14 +165,14 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 7. Select **npm**, right-click and select **Install Missing npm Packages**
 
-8. Delete the following files from project.
+8. Delete the following folders and files from project.
 
    - **Typings** ,  **Scripts** ,  **public** and **Views** folders
    - **routes/index.ts** ,  **routes/user.ts** files
    - **typings.json** file
    - **README.md** file
 
-9. Copy the files of [Lab Files](Lab Files/) folder into the folder containing the `.njsproj`  file. Include **angular** files in the Visual Studio project as follows:
+9. Copy the files of [Lab Files](Lab%20Files) folder into the folder containing the `.njsproj`  file. Include **angular** files in the Visual Studio project as follows:
 
    - app/css/bootstrap.min.css
    - app/css/Site.css
