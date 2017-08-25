@@ -4,7 +4,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 **Table of contents**
 * [Register the application in Azure Active Directory](#register-the-application-in-azure-active-directory)
-* [Prerequisites](#Prerequisites)
+* [Prerequisites](#prerequisites)
 * [Build and debug locally](#build-and-debug-locally)
 
 
@@ -83,7 +83,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 3. Close terminal window, copy below file of [Lab Files](Lab Files) folder into **basicsso** root folder:
 
-   - Gemfile
+  - Gemfile
 
 4. Copy the following files of [Lab Files](Lab Files)  into **basicsso/app/assets/javascripts** folder:
 
