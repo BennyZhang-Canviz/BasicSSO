@@ -16,8 +16,6 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 3. Click **Azure Active Directory** -> **App registrations** -> **+Add**.
 
-   ![](Images/aad-create-app-01.png)
-
 4. Input a **Name**, and select **Web app / API** as **Application Type**.
 
    Input **Sign-on URL**: https://localhost:44377/
@@ -73,11 +71,11 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 ## Build and debug locally
 
-1.  Open a terminal, navigate to a directory where you have rights to create files, and type
+1.  Open a terminal, navigate to a directory where you have rights to create files, and type 
 
-   `$ rails new basicsso`
+      `$ rails new basicsso`
 
-   ![](Images/new-project-01.png)
+      ![](Images/new-project-01.png)
 
 2. This will create a Rails application called **basicsso** in directory.
 
