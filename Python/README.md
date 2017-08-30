@@ -134,7 +134,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
 
 
 ```python
- from django.conf import settings
+from django.conf import settings
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import authenticate as auth_authenticate
@@ -481,7 +481,7 @@ class UnifiedUser(object):
 
 
 ```python
-	import urllib
+import urllib
 
 import constant
 
