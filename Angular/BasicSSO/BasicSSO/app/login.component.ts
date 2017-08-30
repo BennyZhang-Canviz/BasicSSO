@@ -8,7 +8,7 @@ import { Inject } from '@angular/core';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
-import { AuthHelper } from "../helper/authHelper";
+import { AuthHelper } from "./authHelper";
 
 @Component({
     encapsulation: ViewEncapsulation.None,
@@ -18,6 +18,8 @@ import { AuthHelper } from "../helper/authHelper";
 })
 
 export class Login implements OnInit {
+    ifShowContextMenu: boolean;
+    fullName: string;
 
     constructor(
         private router: Router,
@@ -26,6 +28,8 @@ export class Login implements OnInit {
     }
 
     ngOnInit() {
+        this.ifShowContextMenu = false;
+        this.initFullName();
     }
 
     login() {
@@ -34,5 +38,23 @@ export class Login implements OnInit {
 
     isLogin() {
         return this.auth.IsLogin();
+    }
+
+    doLogOff(): void {
+        console.log('logOff');
+        window.location.href = '/logout';
+    }
+
+    showContextMenu() {
+        this.ifShowContextMenu = !(this.ifShowContextMenu);
+    }
+
+    initFullName() {
+        if (this.auth.IsLogin()) {
+            this.auth.getCurrentUser()
+                .subscribe((user) => {
+                    this.fullName = user.email;
+                });
+        }
     }
 }

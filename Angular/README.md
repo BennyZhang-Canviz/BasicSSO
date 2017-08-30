@@ -172,64 +172,489 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
    - **typings.json** file
    - **README.md** file
 
-9. Copy the files of [Lab Files](Lab%20Files) folder into the folder containing the `.njsproj`  file. Include **angular** files in the Visual Studio project as follows:
+9. Select **BasicSSO**, add a new folder named **app**
 
-   - app/css/bootstrap.min.css
-   - app/css/Site.css
-   - app/header/header.component.template.html
-   - app/header/header.component.ts
-   - app/helper/authHelper.ts
-   - app/helper/cookieHelper.ts
-   - app/login/login.component.template.html
-   - app/login/login.component.ts
-   - app/app.component.css
-   - app/app.component.template.html
-   - app/app.component.ts
-   - app/app.module.ts
-   - app/app.routing.ts
-   - app/main.ts
-   - index.html
+10. Select **app** folder, add the following new files into **app** folder.
 
-10. Include **server** files in the Visual Studio project as follows:
+  - **app.component.template.html** ,  **app.component.ts** 
+  - **login.component.template.html** ,  **login.component.ts**
+  - **app.module.ts**, **app.routing.ts**
+  - **authHelper.ts** 
+  - **site.css**
+  - **main.ts**
 
-  - ssl/cert.pem
-  - ssl/csr.pem
-  - ssl/key.pem
-  - constants.ts
-  - gulpfile.js
-  - systemjs.config.js
-  - tsconfig.json
+11. Open **app.component.template.html** file, delete all code and add the following code into it.
 
-11. Open **app/helper/authHelper.ts** file, add the following code into **AuthHelper** class
+    ```html
+    <router-outlet></router-outlet>
+    ```
+
+12. Open **app.component.ts** file, delete all code and add the following code into it.
 
     ```typescript
-    public IsLogin(): boolean {
-        var token = CookieHelper.get('authType');
-        return token && token != "undefined";
-    }
+    import { Component, OnInit } from '@angular/core';
+    import { AuthHelper } from "./authHelper";
 
-    public getCurrentUser() {
-    	return this._http.get(this.meAPIUrl + '?t=' + new Date().getTime(), {})
-    	.map((response: Response) => response.json());
-    }
+    @Component({
+        moduleId: module.id,
+        selector: 'app',
+        templateUrl: 'app.component.template.html'
+    })
 
-    login() {
-    	window.location.href = "/auth/login/o365";
+    export class AppComponent implements OnInit {
+        constructor(
+            private auth: AuthHelper) {
+        }
+        ngOnInit() {
+        }
     }
     ```
 
-12. Right-click project,  **Add ->New Folder** named **data**.
+13. Open **login.component.template.html** file, delete all code and add the following code into it.
 
-13. Right-click **data** folder,  **Add->New Item->TypeScript file** named **dbContext.ts**.
+    ```html
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Basic SSO</a>
+            </div>
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav"></ul>
+                <form class="navbar-right" id="logoutForm" method="post">
+                    <div class="userinfo">
+                        <a href="javascript:void(0);" id="userinfolink" (click)="showContextMenu(this)">
+                            <span *ngIf="fullName">Hello {{fullName}}</span>
+                            <span *ngIf="fullName" class="caret" id="caret" [class.transformcaret]="ifShowContextMenu"></span>
+                        </a>
+                    </div>
+                    <div class="" id="userinfoContainer" [hidden]="!ifShowContextMenu">
+                        <div class="popuserinfo">
+                            <div class="subitem">
+                                <a href="javascript:void(0);" (click)="doLogOff(this)">Log off</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="containerbg">
+        <div class="container body-content">
+            <div class="loginbody">
+                <br />
+                <div class="row" [hidden]="isLogin()">
+                    <p>
+                        <button type="submit" class="btn btn-default btn-ms-login" id="OpenIdConnect" name="provider" value="OpenIdConnect" title="Log in using your Microsoft Work or school account" (click)="login()">Sign In With Office 365</button>
+                    </p>
+                </div>
+                <div class="row" [hidden]="!isLogin()">
+                    <h1>Hello World!</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    ```
 
-14. Add the following code to **dbContext.ts** file to create token cache table.
+14. Open **login.component.ts** file, delete all code and add the following code into it.
+
+    ```typescript
+    import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+    import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+    import { Inject } from '@angular/core';
+    import 'rxjs/add/operator/filter';
+    import 'rxjs/add/operator/map';
+    import 'rxjs/add/operator/mergeMap';
+    import { AuthHelper } from "./authHelper";
+
+    @Component({
+        encapsulation: ViewEncapsulation.None,
+        moduleId: module.id,
+        selector: 'loginform',
+        templateUrl: 'login.component.template.html'
+    })
+
+    export class Login implements OnInit {
+        ifShowContextMenu: boolean;
+        fullName: string;
+
+        constructor(
+            private router: Router,
+            private activatedRoute: ActivatedRoute,
+            private auth: AuthHelper) {
+        }
+
+        ngOnInit() {
+            this.ifShowContextMenu = false;
+            this.initFullName();
+        }
+
+        login() {
+            this.auth.login();
+        }
+
+        isLogin() {
+            return this.auth.IsLogin();
+        }
+
+        doLogOff(): void {
+            console.log('logOff');
+            window.location.href = '/logout';
+        }
+
+        showContextMenu() {
+            this.ifShowContextMenu = !(this.ifShowContextMenu);
+        }
+
+        initFullName() {
+            if (this.auth.IsLogin()) {
+                this.auth.getCurrentUser()
+                    .subscribe((user) => {
+                        this.fullName = user.email;
+                    });
+            }
+        }
+    }
+    ```
+
+15. Open **app.module.ts** file, delete all code and add the following code into it.
+
+    ```typescript
+    import { NgModule } from '@angular/core';
+    import { FormsModule } from '@angular/forms';
+    import { BrowserModule } from '@angular/platform-browser';
+    import { HttpModule } from '@angular/http';
+    import { AppComponent } from './app.component';
+    import { Login } from './login.component';
+    import { routing } from './app.routing';
+    import { AuthHelper } from "./authHelper";
+
+    @NgModule({
+        imports: [BrowserModule, FormsModule, routing, HttpModule],
+        declarations: [AppComponent, Login],
+        bootstrap: [AppComponent],
+        providers: [
+            AuthHelper
+        ]
+    })
+
+    export class AppModule {
+    }
+    ```
+
+16. Open **app.routing.ts** file, delete all code and add the following code into it.
+
+    ```typescript
+    import { ModuleWithProviders } from '@angular/core';
+    import { Routes, RouterModule } from '@angular/router';
+    import { Login } from './login.component';
+
+    export const appRoutes: Routes = [
+        { path: '**', component: Login }
+    ];
+
+    export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
+    ```
+
+17. Open **authHelper.ts** file, delete all code and add the following code into it.
+
+    ```typescript
+    import { Injectable, Inject } from "@angular/core";
+    import { Http, Headers, Response } from '@angular/http';
+    import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+    import { Observable, ReplaySubject } from 'rxjs/Rx';
+
+    @Injectable()
+    export class AuthHelper {
+
+        private meAPIUrl = 'api/me';
+        constructor(
+            private router: Router,
+            private _http: Http) {
+        }
+
+        public IsLogin(): boolean {
+            var token = CookieHelper.get('authType');
+            return token && token != "undefined";
+        }
+
+        public getCurrentUser() {
+            return this._http.get(this.meAPIUrl + '?t=' + new Date().getTime(), {})
+                .map((response: Response) => response.json());
+        }
+
+        login() {
+            window.location.href = "/auth/login/o365";
+        }
+    }
+
+    export class CookieHelper {
+
+        public static check(name: string): boolean {
+            name = encodeURIComponent(name);
+            let regexp = new RegExp('(?:^' + name + '|;\\s*' + name + ')=(.*?)(?:;|$)', 'g');
+            let exists = regexp.test(document.cookie);
+            return exists;
+        }
+
+        public static get(name: string): string {
+            if (CookieHelper.check(name)) {
+                name = encodeURIComponent(name);
+                let regexp = new RegExp('(?:^' + name + '|;\\s*' + name + ')=(.*?)(?:;|$)', 'g');
+                let result = regexp.exec(document.cookie);
+                return decodeURIComponent(result[1]);
+            } else {
+                return null;
+            }
+        }
+    }
+    ```
+
+18. Open **site.css** file, delete all code and add the following code into it.
+
+    ```style
+    html{height:100%;}
+    body {
+        padding-top: 50px;
+        padding-bottom: 20px;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height:100%;
+    }
+    a{cursor:pointer;}
+    .containerbg{    background: linear-gradient(to bottom, white, #9e9e9e);height:auto; height: auto;
+        min-height: 100%;padding-bottom:20px;
+    }
+    .body-content {
+        padding-left: 15px;
+        padding-right: 15px;
+        height:100%;
+    }
+    .navbar-inverse{background-color:#237e17;border-color:#237e17;}
+    .navbar-inverse .navbar-brand, 
+    .navbar-inverse .navbar-nav > li > a {color:white;}
+    .navbar-inverse .navbar-brand{font-size:14px}
+    .navbar-collapse form{margin-bottom:0;}
+    .navbar-right a{color:white;text-decoration:none;}
+    .userinfo .caret{color:white;font-size:20px;    }
+    .transformcaret{transform: rotate(180deg);}
+    .userinfo{height:50px;line-height:50px;}
+    .navbar-collapse{position:relative;}
+    .popuserinfo{position:absolute;top:40px;z-index:999;background-color:white;padding:15px 0;
+                 width:200px;border:1px solid #dedede;box-sizing: border-box;left:955px;}
+    @-moz-document url-prefix() 
+    {   
+        .popuserinfo{left:955px;}
+    }
+    .subitem{float:left;width:100%;}
+    .subitem a{color:black;text-decoration:none;width:100%;height:100%;display:block;padding:10px 0 10px 20px;}
+    .subitem:hover{background-color:#237e17;color:white;}
+    .subitem a:hover{color:white;}
+    .container {width: 1170px;}
+    ```
+
+19. Open **main.ts** file, delete all code and add the following code into it.
+
+    ```typescript
+    import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+    import { AppModule } from './app.module';
+    const platform = platformBrowserDynamic();
+    platform.bootstrapModule(AppModule);
+    ```
+
+20. Select **BasicSSO** project folder, add the following new files into it.
+
+    - **Index.html**
+    - **constants.ts**
+    - **gulpfile.js**
+    - **systemjs.config.js**
+    - **tsconfig.json**
+
+21. Open **Index.html** file, delete all code and add the following code into it.
+
+    ```html
+    <html>
+    <head>
+        <title>Basic SSO</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <base href="/">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/app/site.css" rel="stylesheet" />
+    </head>
+    <body>
+        <app></app>
+        <script src="node_modules/core-js/client/shim.min.js"></script>
+        <script src="node_modules/zone.js/dist/zone.js"></script>
+        <script src="node_modules/systemjs/dist/system.src.js"></script>
+        <script src="systemjs.config.js"></script>
+        <script>
+            System.import('app').catch(function (err) { console.error(err); });
+        </script>
+    </body>
+    </html>
+    ```
+
+22. Open **constants.ts** file, delete all code and add the following code into it.
+
+    ```typescript
+    export class Constants {
+        public static readonly Host: string = process.env.WEBSITE_HOSTNAME as string;
+        public static readonly ClientId: string = process.env.clientId as string;
+        public static readonly ClientSecret: string = process.env.clientSecret as string;
+        public static readonly AADInstance: string = "https://login.microsoftonline.com/";
+        public static readonly Authority: string = Constants.AADInstance + "common/";
+        public static readonly IdentityMetadata: string = Constants.Authority + '.well-known/openid-configuration';
+        public static readonly MSGraphResource: string = "https://graph.microsoft.com";
+        public static readonly AADGraphResource: string = "https://graph.windows.net"; 
+        public static readonly SQLiteDB: string = process.env.SQLiteDB as string;
+    }
+    ```
+
+23. Open **gulpfile.js** file, delete all code and add the following code into it.
+
+    ```javascript
+    var gulp = require('gulp'),
+        path = require('path'),
+        Builder = require('systemjs-builder'),
+        ts = require('gulp-typescript'),
+        sourcemaps = require('gulp-sourcemaps'),
+        embedTemplates = require('gulp-angular-embed-templates');
+
+    var tsProject = ts.createProject('tsconfig.json');
+
+    // build server side ts
+    gulp.task('ts-server', () => {
+        return gulp.src(['**/*.ts', '!app{,/**}', '!dist{,/**}', '!node_modules{,/**}'])
+            .pipe(sourcemaps.init({
+                loadMaps: true
+            }))
+            .pipe(tsProject())
+            .pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest('./'));
+    });
+
+    // build and bundle client side ts and html
+    var appDev = 'app';
+    var appProd = 'dist';
+
+    gulp.task('ts-client', () => {
+        return gulp.src(appDev + '/**/*.ts')
+            .pipe(embedTemplates({ sourceType: 'ts' }))
+            .pipe(sourcemaps.init({
+                loadMaps: true
+            }))
+            .pipe(tsProject())
+            .pipe(sourcemaps.write('.'))
+            .pipe(gulp.dest(appProd));
+    });
+
+    gulp.task('bundle-client', function () {
+        var builder = new Builder('', 'systemjs.config.js');
+        return builder
+            .buildStatic(appProd + '/main.js', appProd + '/bundle.js', {
+                minify: false, sourceMaps: true, encodeNames: false
+            })
+            .then(function () {
+                console.log('Build complete');
+            })
+            .catch(function (err) {
+                console.log('Build error');
+                console.log(err);
+            });
+    });
+
+    gulp.task('build', gulp.series(['ts-server', 'ts-client', 'bundle-client']));
+    ```
+
+24. Open **systemjs.config.js** file, delete all code and add the following code into it.
+
+    ```javascript
+    (function (global) {
+        System.config({
+            paths: {
+                // paths serve as alias
+                'npm:': 'node_modules/'
+            },
+            // map tells the System loader where to look for things
+            map: {
+                // our app is within the app folder
+                app: 'app',
+                // angular bundles
+                '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
+                '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
+                '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
+                '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
+                '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+                '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
+                '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
+                '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
+                // other libraries
+                'rxjs': 'npm:rxjs',
+                'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
+            },
+            // packages tells the System loader how to load when no filename and/or no extension
+            packages: {
+                app: {
+                    main: './main.js',
+                    defaultExtension: 'js'
+                },
+                rxjs: {
+                    defaultExtension: 'js'
+                },
+                dist: {
+                    defaultExtension: 'js'
+                }
+            }
+        });
+    })(this);
+    ```
+
+25. Open **tsconfig.json** file, delete all code and add the following code into it.
+
+    ```typescript
+    {
+      "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": [ "es2015", "dom" ],
+        "noImplicitAny": false,
+        "suppressImplicitAnyIndexErrors": true,
+        "noStrictGenericChecks": true
+      }
+    }
+    ```
+
+26. Select **BasicSSO** project, add the a new folder named **ssl** into it.
+
+27. Copy the following files of **[ssl](/ssl)** folder into **ssl** folder that just created above step, and include these files into project, about certificate, you can reference this [link](https://github.com/leeroybrun/node-express-https).
+
+    - **sssl/cert.pem**
+    - **ssl/csr.pem**
+    - **ssl/key.pem**
+
+28. Right-click project,  **Add ->New Folder** named **services**.
+
+29. Right-click **services** folder,  add the following new files into it.
+
+    - **appAuth.ts**
+    - **dbContext.ts**
+    - **tokenCacheService.ts**
+
+30. Open **dbContext.ts** file, delete all code and add the following code into it to create token cache table.
 
     ```typescript
     import * as Sequelize from 'sequelize';
     import * as Promise from "bluebird";
     import { Constants } from '../constants';
-    ```
-
 
     export interface TokenCacheAttributes {
         userId: string;
@@ -239,25 +664,24 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     export interface TokenCacheInstance extends Sequelize.Instance<TokenCacheAttributes>, TokenCacheAttributes {
     }
     export interface TokenCacheModel extends Sequelize.Model<TokenCacheInstance, TokenCacheAttributes> { }
-    
+
     export class DbContext {
         public sequelize: Sequelize.Sequelize;
         public TokenCache: TokenCacheModel;
-    
+
         constructor() {
             this.init();
         }
-    
+
         public sync(options?: Sequelize.SyncOptions): Promise<any> {
             return this.sequelize.sync(options);
         }
-    
+
         private init() {
             this.sequelize = new Sequelize("", "", "", {
                 dialect: 'sqlite',
                 storage: Constants.SQLiteDB
             });
-
 
             this.TokenCache = this.sequelize.define<TokenCacheInstance, TokenCacheAttributes>('TokenCache',
                 {
@@ -271,21 +695,15 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
                 });
         }
     }
-    ​```
+    ```
 
-
-17. Right-click project,  **Add ->New Folder** named **services**.
-
-18. Right-click **services** folder,  **Add->New Item->TypeScript file** named **tokenCacheService.ts**.
-
-19. Add the following code to **tokenCacheService.ts** file to create/update/delete token cache.
+31. Open **tokenCacheService.ts** file, delete all code and add the following code into it to create/update/delete token cache.
 
     ```typescript
-    import { DbContext, TokenCacheInstance } from '../data/dbContext';
+    import { DbContext, TokenCacheInstance } from '../services/dbContext';
     import * as Promise from "bluebird";
     import { Constants } from '../constants';
 
-    // In this sample, tokens are cached in clear text in database. For real projects, they should be encrypted.
     export class TokenCacheService {
 
         private dbContext = new DbContext();
@@ -339,130 +757,122 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-20. Right-click project,  **Add ->New Folder** named **auth**.
+32. Open **appAuth.ts** file, delete all code and add the following code into it to authentication.
 
-21. Right-click **auth** folder, **Add->New Item->TypeScript file** named **appAuth.ts**.
-
-22. Add the following code to **appAuth.ts** file to authentication.
-
-
-```typescript
+    ```typescript
     var express = require("express");
-var passport = require("passport");
-import https = require('https');
-import { TokenCacheService } from '../services/tokenCacheService';
-import { Constants } from '../constants';
+    var passport = require("passport");
+    import https = require('https');
+    import { TokenCacheService } from '../services/tokenCacheService';
+    import { Constants } from '../constants';
 
-var tokenCache = new TokenCacheService();
+    var tokenCache = new TokenCacheService();
 
-export class appAuth {
-    private app: any = null;
+    export class appAuth {
+        private app: any = null;
 
-    //AAD authentication strategy
-    private OIDCStrategy = require('../node_modules/passport-azure-ad/lib/index').OIDCStrategy;
+        private OIDCStrategy = require('../node_modules/passport-azure-ad/lib/index').OIDCStrategy;
 
-    constructor(app: any) {
-        this.app = app;
+        constructor(app: any) {
+            this.app = app;
 
-        passport.serializeUser(function (user, done) {
-            done(null, user);
-        });
-
-        passport.deserializeUser(function (user, done) {
-            done(null, user);
-        });
-
-        passport.use('O365', this.constructOIDCStrategy());
-    }
-
-    constructOIDCStrategy() {
-        return new this.OIDCStrategy({
-            identityMetadata: Constants.IdentityMetadata,
-            clientID: Constants.ClientId,
-            responseType: 'code',
-            responseMode: 'form_post',
-            redirectUrl: this.app.get('env') === 'development'
-                ? 'https://localhost:44380/auth/openid/return'
-                : 'https://' + Constants.Host + '/auth/openid/return',
-            allowHttpForRedirectUrl: true,
-            clientSecret: Constants.ClientSecret,
-            validateIssuer: false,
-            isB2C: false,
-            passReqToCallback: true,
-            loggingLevel: 'info',
-            nonceLifetime: null,
-        }, function (req, iss, sub, profile, jwtClaims, access_token, refresh_token, params, done) {
-            if (!profile.oid) {
-                return done(new Error("No oid found"), null);
-            }
-            profile.tid = profile._json.tid;
-            profile.authType = 'O365';
-            req.res.cookie('authType', 'O365');
-
-            var tokenCacheService = new TokenCacheService();
-            tokenCacheService.createOrUpdate(profile.oid, Constants.AADGraphResource, {
-                refreshToken: refresh_token,
-                accessToken: access_token,
-                expiresOn: new Date(parseInt(params.expires_on) * 1000)
-            }).then(item => {
-                done(null, profile);
+            passport.serializeUser(function (user, done) {
+                done(null, user);
             });
-        });
-    }
 
+            passport.deserializeUser(function (user, done) {
+                done(null, user);
+            });
 
-    ensureAuthenticated(req, res, next) {
-        if (req.isAuthenticated()) {
-            return next();
+            passport.use('O365', this.constructOIDCStrategy());
         }
-        else if (req.baseUrl.startsWith("/api/")) {
-            res.send(401, 'missing authorization header');
+
+        constructOIDCStrategy() {
+            return new this.OIDCStrategy({
+                identityMetadata: Constants.IdentityMetadata,
+                clientID: Constants.ClientId,
+                responseType: 'code',
+                responseMode: 'form_post',
+                redirectUrl: this.app.get('env') === 'development'
+                    ? 'https://localhost:44380/auth/openid/return'
+                    : 'https://' + Constants.Host + '/auth/openid/return',
+                allowHttpForRedirectUrl: true,
+                clientSecret: Constants.ClientSecret,
+                validateIssuer: false,
+                isB2C: false,
+                passReqToCallback: true,
+                loggingLevel: 'info',
+                nonceLifetime: null,
+            }, function (req, iss, sub, profile, jwtClaims, access_token, refresh_token, params, done) {
+                if (!profile.oid) {
+                    return done(new Error("No oid found"), null);
+                }
+                profile.tid = profile._json.tid;
+                profile.authType = 'O365';
+                req.res.cookie('authType', 'O365');
+
+                var tokenCacheService = new TokenCacheService();
+                tokenCacheService.createOrUpdate(profile.oid, Constants.AADGraphResource, {
+                    refreshToken: refresh_token,
+                    accessToken: access_token,
+                    expiresOn: new Date(parseInt(params.expires_on) * 1000)
+                }).then(item => {
+                    done(null, profile);
+                });
+            });
         }
-        res.redirect('/');
-    }
 
-    public initPassport(app: any) {
-        app.use(passport.initialize());
-        app.use(passport.session());
-    }
-
-    public initAuthRoute(app: any) {
-
-        app.get('/auth/login/o365', function (req, res, next) {
-            var email = '';
-            passport.authenticate('O365', {
-                resourceURL: Constants.AADGraphResource,
-                customState: 'my_state',
-                failureRedirect: '/',
-                login_hint: email
-            })(req, res, next);
-        });
-
-        app.get('/auth/openid/return', passport.authenticate('O365', { failureRedirect: '/' }), function (req, res) {
+        ensureAuthenticated(req, res, next) {
+            if (req.isAuthenticated()) {
+                return next();
+            }
+            else if (req.baseUrl.startsWith("/api/")) {
+                res.send(401, 'missing authorization header');
+            }
             res.redirect('/');
-        });
+        }
 
-        app.post('/auth/openid/return', passport.authenticate('O365', { failureRedirect: '/' }), function (req, res) {
-            res.redirect('/');
-        });
+        public initPassport(app: any) {
+            app.use(passport.initialize());
+            app.use(passport.session());
+        }
 
-        app.get('/logout', function (req, res) {
-            let authType = req.cookies['authType'];
-            res.clearCookie('authType');
-            req.logOut();
-            req.session = null;
-            if (authType == 'O365')
-                res.redirect(Constants.Authority + 'oauth2/logout?post_logout_redirect_uri=' + req.protocol + '://' + req.get('host'));
-            else
+        public initAuthRoute(app: any) {
+            app.get('/auth/login/o365', function (req, res, next) {
+                var email = '';
+                passport.authenticate('O365', {
+                    resourceURL: Constants.AADGraphResource,
+                    customState: 'my_state',
+                    failureRedirect: '/',
+                    login_hint: email
+                })(req, res, next);
+            });
+
+            app.get('/auth/openid/return', passport.authenticate('O365', { failureRedirect: '/' }), function (req, res) {
                 res.redirect('/');
-        });
-    }
-}    
-```
+            });
 
-23. Right click **routes** folder, **Add->New Item->TypeScript file** named **me.ts**.
+            app.post('/auth/openid/return', passport.authenticate('O365', { failureRedirect: '/' }), function (req, res) {
+                res.redirect('/');
+            });
 
-24. Add the following code to **me.ts** file to authentication.
+            app.get('/logout', function (req, res) {
+                let authType = req.cookies['authType'];
+                res.clearCookie('authType');
+                req.logOut();
+                req.session = null;
+                if (authType == 'O365')
+                    res.redirect(Constants.Authority + 'oauth2/logout?post_logout_redirect_uri=' + req.protocol + '://' + req.get('host'));
+                else
+                    res.redirect('/');
+            });
+        }
+    }    
+    ```
+
+33. Right click **routes** folder, add a new file named **me.ts**.
+
+34. Add the following code to **me.ts** file to authentication.
     ```typescript
     import express = require('express');
 
@@ -481,10 +891,10 @@ export class appAuth {
     export = router;
     ```
 
-25. Open **app.ts** file, delete all code and copy the following code into it.
+35. Open **app.ts** file, delete all code and copy the following code into it.
 
     ```typescript
-    import { appAuth } from './auth/appAuth';
+    import { appAuth } from './services/appAuth';
     var http = require("http");
     var https = require("https");
     var cookieSession = require('cookie-session');
@@ -495,7 +905,7 @@ export class appAuth {
     var bodyParser = require("body-parser");
     var fs = require("fs");
     var url = require("url");
-    var dbContext_1 = require("./data/dbContext");
+    var dbContext_1 = require("./services/dbContext");
     var meRoute = require("./routes/me");
     var app = express();
 
@@ -582,7 +992,7 @@ export class appAuth {
     }
     ```
 
-26. Select Project file, click right key and select **Properties**, 
+36. Select Project file, click right key and select **Properties**, 
 
     - Change Script to **app.ts**
 
@@ -608,11 +1018,11 @@ export class appAuth {
 
     ​
 
-27. Press F5, click **Sign In with Office 365** button to sign in.
+37. Press F5, click **Sign In with Office 365** button to sign in.
 
     ![](Images/new-project-04.png)
 
-28. Hello world page is presented after login successfully . 
+38. Hello world page is presented after login successfully . 
 
     ![](Images/web-app-helloworld.png)
 

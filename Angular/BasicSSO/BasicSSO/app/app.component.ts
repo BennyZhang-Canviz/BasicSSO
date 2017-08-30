@@ -3,13 +3,12 @@
 * See LICENSE in the project root for license information.
 */
 import { Component, OnInit } from '@angular/core';
-import { AuthHelper } from "./helper/authHelper";
+import { AuthHelper } from "./authHelper";
 
 @Component({
     moduleId: module.id,
     selector: 'app',
-    templateUrl: 'app.component.template.html',
-    styleUrls: ['app.component.css']
+    templateUrl: 'app.component.template.html'
 })
 
 export class AppComponent implements OnInit {

@@ -4,12 +4,9 @@
 */
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { Login } from './login/login.component';
-import { Header } from './header/header.component';
+import { Login } from './login.component';
 
 export const appRoutes: Routes = [
-    { path: 'login', component: Login },
-    { path: 'header', component: Header },
     { path: '**', component: Login }
 ];
 

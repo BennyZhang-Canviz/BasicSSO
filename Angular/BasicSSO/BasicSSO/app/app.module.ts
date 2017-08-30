@@ -7,14 +7,13 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
-import { Login } from './login/login.component';
-import { Header } from './header/header.component';
+import { Login } from './login.component';
 import { routing } from './app.routing';
-import { AuthHelper } from "./helper/authHelper";
+import { AuthHelper } from "./authHelper";
 
 @NgModule({
     imports: [BrowserModule, FormsModule, routing, HttpModule],
-    declarations: [AppComponent, Login, Header],
+    declarations: [AppComponent, Login],
     bootstrap: [AppComponent],
     providers: [
         AuthHelper
