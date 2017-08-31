@@ -176,20 +176,20 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 10. Select **app** folder, add the following new files into **app** folder.
 
-    - **app.component.template.html , app.component.ts**
-    - **login.component.template.html , login.component.ts**
-    - **app.module.ts, app.routing.ts**
-    - **authHelper.ts**
-    - **site.css**
-    - **main.ts**
+   - **app.component.template.html , app.component.ts**
+   - **login.component.template.html , login.component.ts**
+   - **app.module.ts, app.routing.ts**
+   - **authHelper.ts**
+   - **site.css**
+   - **main.ts**
 
-12. Open **app.component.template.html** file, delete all code and add the following code into it.
+11. Open **app.component.template.html** file, delete all code and add the following code into it.
 
     ```html
     <router-outlet></router-outlet>
     ```
 
-13. Open **app.component.ts** file, delete all code and add the following code into it.
+12. Open **app.component.ts** file, delete all code and add the following code into it.
 
     ```typescript
     import { Component, OnInit } from '@angular/core';
@@ -210,7 +210,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-14. Open **login.component.template.html** file, delete all code and add the following code into it.
+13. Open **login.component.template.html** file, delete all code and add the following code into it.
 
     ```html
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -260,7 +260,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     </div>
     ```
 
-15. Open **login.component.ts** file, delete all code and add the following code into it.
+14. Open **login.component.ts** file, delete all code and add the following code into it.
 
     ```typescript
     import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
@@ -321,7 +321,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-16. Open **app.module.ts** file, delete all code and add the following code into it.
+15. Open **app.module.ts** file, delete all code and add the following code into it.
 
     ```typescript
     import { NgModule } from '@angular/core';
@@ -346,7 +346,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-17. Open **app.routing.ts** file, delete all code and add the following code into it.
+16. Open **app.routing.ts** file, delete all code and add the following code into it.
 
     ```typescript
     import { ModuleWithProviders } from '@angular/core';
@@ -360,7 +360,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
     ```
 
-18. Open **authHelper.ts** file, delete all code and add the following code into it.
+17. Open **authHelper.ts** file, delete all code and add the following code into it.
 
     ```typescript
     import { Injectable, Inject } from "@angular/core";
@@ -414,7 +414,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-19. Open **site.css** file, delete all code and add the following code into it.
+18. Open **site.css** file, delete all code and add the following code into it.
 
     ```style
     html{height:100%;}
@@ -457,7 +457,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     .container {width: 1170px;}
     ```
 
-20. Open **main.ts** file, delete all code and add the following code into it.
+19. Open **main.ts** file, delete all code and add the following code into it.
 
     ```typescript
     import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -466,7 +466,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     platform.bootstrapModule(AppModule);
     ```
 
-21. Select **BasicSSO** project folder, add the following new files into it.
+20. Select **BasicSSO** project folder, add the following new files into it.
 
     - **Index.html**
     - **constants.ts**
@@ -474,7 +474,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     - **systemjs.config.js**
     - **tsconfig.json**
 
-22. Open **Index.html** file, delete all code and add the following code into it.
+21. Open **Index.html** file, delete all code and add the following code into it.
 
     ```html
     <html>
@@ -499,7 +499,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     </html>
     ```
 
-23. Open **constants.ts** file, delete all code and add the following code into it.
+22. Open **constants.ts** file, delete all code and add the following code into it.
 
     ```typescript
     export class Constants {
@@ -515,7 +515,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-24. Open **gulpfile.js** file, delete all code and add the following code into it.
+23. Open **gulpfile.js** file, delete all code and add the following code into it.
 
     ```javascript
     var gulp = require('gulp'),
@@ -571,7 +571,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     gulp.task('build', gulp.series(['ts-server', 'ts-client', 'bundle-client']));
     ```
 
-25. Open **systemjs.config.js** file, delete all code and add the following code into it.
+24. Open **systemjs.config.js** file, delete all code and add the following code into it.
 
     ```javascript
     (function (global) {
@@ -614,7 +614,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     })(this);
     ```
 
-26. Open **tsconfig.json** file, delete all code and add the following code into it.
+25. Open **tsconfig.json** file, delete all code and add the following code into it.
 
     ```typescript
     {
@@ -633,23 +633,23 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-27. Select **BasicSSO** project, add the a new folder named **ssl** into it.
+26. Select **BasicSSO** project, add the a new folder named **ssl** into it.
 
-28. Copy the following files of **[ssl](/ssl)** folder into **ssl** folder that just created above step, and include these files into project, about certificate, you can reference this [link](https://github.com/leeroybrun/node-express-https).
+27. Copy the following files of **[ssl](ssl)** folder into **ssl** folder that just created above step, and include these files into project, about certificate, you can reference this [link](https://github.com/leeroybrun/node-express-https).
 
     - **sssl/cert.pem**
     - **ssl/csr.pem**
     - **ssl/key.pem**
 
-29. Right-click project,  **Add ->New Folder** named **services**.
+28. Right-click project,  **Add ->New Folder** named **services**.
 
-30. Right-click **services** folder,  add the following new files into it.
+29. Right-click **services** folder,  add the following new files into it.
 
     - **appAuth.ts**
     - **dbContext.ts**
     - **tokenCacheService.ts**
 
-31. Open **dbContext.ts** file, delete all code and add the following code into it to create token cache table.
+30. Open **dbContext.ts** file, delete all code and add the following code into it to create token cache table.
 
     ```typescript
     import * as Sequelize from 'sequelize';
@@ -697,7 +697,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-32. Open **tokenCacheService.ts** file, delete all code and add the following code into it to create/update/delete token cache.
+31. Open **tokenCacheService.ts** file, delete all code and add the following code into it to create/update/delete token cache.
 
     ```typescript
     import { DbContext, TokenCacheInstance } from '../services/dbContext';
@@ -757,7 +757,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-33. Open **appAuth.ts** file, delete all code and add the following code into it to authentication.
+32. Open **appAuth.ts** file, delete all code and add the following code into it to authentication.
 
     ```typescript
     var express = require("express");
@@ -870,9 +870,9 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }    
     ```
 
-34. Right click **routes** folder, add a new file named **me.ts**.
+33. Right click **routes** folder, add a new file named **me.ts**.
 
-35. Add the following code to **me.ts** file to authentication.
+34. Add the following code to **me.ts** file to authentication.
     ```typescript
     import express = require('express');
 
@@ -891,7 +891,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     export = router;
     ```
 
-36. Open **app.ts** file, delete all code and copy the following code into it.
+35. Open **app.ts** file, delete all code and copy the following code into it.
 
     ```typescript
     import { appAuth } from './services/appAuth';
@@ -992,7 +992,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-37. Select Project file, click right key and select **Properties**, 
+36. Select Project file, click right key and select **Properties**, 
 
     - Change Script to **app.ts**
 
@@ -1018,11 +1018,11 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
     ​
 
-38. Press F5, click **Sign In with Office 365** button to sign in.
+37. Press F5, click **Sign In with Office 365** button to sign in.
 
     ![](Images/new-project-04.png)
 
-39. Hello world page is presented after login successfully . 
+38. Hello world page is presented after login successfully . 
 
     ![](Images/web-app-helloworld.png)
 
