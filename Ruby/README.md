@@ -153,8 +153,8 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 10. Open **site.css** file, delete all code and add the following code into it.
 
-   ```ruby
-   html{height:100%;}
+    ```ruby
+    html{height:100%;}
    body {padding-top: 50px;padding-bottom: 20px;background-repeat: no-repeat;background-size: 100% 100%;height:100%;}
    .body-content {padding-left: 15px;padding-right: 15px;height:100%;}
    .containerbg{height:100%;}
@@ -180,7 +180,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
    .subitem:hover{background-color:#127605;color:white;}
    .subitem a:hover{color:white;}
    .container {width: 1170px;}
-   ```
+    ```
 
 11. Open **application.css** file, delete all code and add the following code into it.
 
@@ -272,13 +272,13 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     end
     ```
 
-17.  Open **session_store.rb** file,  add the following code into it.
+17. Open **session_store.rb** file,  add the following code into it.
 
     ```ruby
     Rails.application.config.session_store :active_record_store, key: '_EDUGraphAPI_ruby_session'
     ```
 
-18.  Open **basicsso/config/initializers/assets.rb** file,  add the following code into it.
+18. Open **basicsso/config/initializers/assets.rb** file,  add the following code into it.
 
     ```ruby
     Rails.application.config.assets.version = '1.0'
@@ -287,7 +287,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     )
     ```
 
-19.  Open **basicsso/lib** folder, add a new file named **exceptions.rb**, add the following code into it.
+19. Open **basicsso/lib** folder, add a new file named **exceptions.rb**, add the following code into it.
 
     ```ruby
     module Exceptions
@@ -295,9 +295,9 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     end
     ```
 
-20.  Open **basicsso/lib** folder, add a new folder named **omniauth**, open **omniauth** folder, add a new folder named **strategies**.
+20. Open **basicsso/lib** folder, add a new folder named **omniauth**, open **omniauth** folder, add a new folder named **strategies**.
 
-21.  Open **strategies** folder, add new file named **azure_oauth2.rb** into it,  add the following code into it.
+21. Open **strategies** folder, add new file named **azure_oauth2.rb** into it,  add the following code into it.
 
     ```ruby
     require 'omniauth/strategies/oauth2'
@@ -479,8 +479,8 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     end
     ```
 
-24.  Open **app/views/layouts/application.html.erb** file, delete all code and  add the following code into it.
-
+24. Open **app/views/layouts/application.html.erb** file, delete all code and  add the following code into it.
+    ```html
         <!DOCTYPE html>
         <html>
           <head>
@@ -516,8 +516,8 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
             </div>
           </body>
         </html>
-
-25.  Add new folder named **account** into **app/views** folder,  
+    ```
+25. Add new folder named **account** into **app/views** folder,  
 
 26. Add new file named **index.html.erb** into **app/views/account** folder, add the following code into it.
 
@@ -715,7 +715,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
       **clientSecret**: use the Key value of the app registration you created earlier.
 
-36.  Type the following command to install bundle and run.
+36. Type the following command to install bundle and run.
 
     ```rails
     bundle install
