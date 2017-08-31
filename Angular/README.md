@@ -635,7 +635,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 26. Select **BasicSSO** project, add the a new folder named **ssl** into it.
 
-27. Copy the following files of **[ssl](ssl)** folder into **ssl** folder that just created above step, and include these files into project, about certificate, you can reference this [link](https://github.com/leeroybrun/node-express-https).
+27. Copy the following files of **[ssl](ssl/)** folder into **ssl** folder that just created above step, and include these files into project, about certificate, you can reference this [link](https://github.com/leeroybrun/node-express-https).
 
     - **sssl/cert.pem**
     - **ssl/csr.pem**
