@@ -163,7 +163,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
      },
    ```
 
-7. Select **npm**, right-click and select **Install Missing npm Packages**
+7. Select **npm**, right-click and select **Install Missing npm Packages**.
 
 8. Delete the following folders and files from project.
 
@@ -176,17 +176,14 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 10. Select **app** folder, add the following new files into **app** folder.
 
-  - **Typings** ,  **Scripts** ,  **public** and **Views** folders
-  - **routes/index.ts** ,  **routes/user.ts** files
-  - **typings.json** file
-  - **README.md** file
+  -  **app.component.template.html** ,  **app.component.ts** 
 
-  - **app.component.template.html** ,  **app.component.ts** 
-  - **login.component.template.html** ,  **login.component.ts**
-  - **app.module.ts**, **app.routing.ts**
-  - **authHelper.ts** 
-  - **site.css**
-  - **main.ts**
+
+  -  **login.component.template.html** ,  **login.component.ts**
+  -  **app.module.ts**, **app.routing.ts**
+  -  **authHelper.ts** 
+  -  **site.css**
+  -  **main.ts**
 
 11. Open **app.component.template.html** file, delete all code and add the following code into it.
 
