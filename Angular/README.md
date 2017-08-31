@@ -1,4 +1,4 @@
-# Basic SSO - Angular/Node version
+﻿# Basic SSO - Angular/Node version
 
 In this sample we show you how to integrate Azure Active Directory(Azure AD) to provide secure sign in and authorization. 
 
@@ -176,13 +176,12 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 10. Select **app** folder, add the following new files into **app** folder.
 
-  - **app.component.template.html , app.component.ts**
-  - **login.component.template.html , login.component.ts**
-  - **app.module.ts, app.routing.ts**
-  - **authHelper.ts**
-  - **site.css**
-  - **main.ts**
-
+    - **app.component.template.html , app.component.ts**
+    - **login.component.template.html , login.component.ts**
+    - **app.module.ts, app.routing.ts**
+    - **authHelper.ts**
+    - **site.css**
+    - **main.ts**
 
 12. Open **app.component.template.html** file, delete all code and add the following code into it.
 
