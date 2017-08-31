@@ -37,6 +37,10 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
      Copy aside **Application ID**, then Click **Save**.
 
+   * Click **Reply URLs**, add the following URL into it.
+
+     [https://localhost:44377/](https://localhost:44377/)
+
    * Click **Required permissions**. Add the following permissions:
 
      | API                            | Application Permissions | Delegated Permissions         |
@@ -293,7 +297,7 @@ Debug the **EDUGraphAPI.Web**:
     using Owin;
     using BasicSSO.Models;
 
-    namespace BasciSSO
+    namespace BasicSSO
     {
         public partial class Startup
         {
