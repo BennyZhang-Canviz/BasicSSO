@@ -174,24 +174,15 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 9. Select **BasicSSO**, add a new folder named **app**.
 
-10. Select **BasicSSO** project folder, add the following new files into it.
+10. Select **app** folder, add the following new files into **app** folder.
 
-  - **Index.html**
-  - **constants.ts**
-  - **gulpfile.js**
-  - **systemjs.config.js**
-  - **tsconfig.json**
+  - **app.component.template.html , app.component.ts**
+  - **login.component.template.html , login.component.ts**
+  - **app.module.ts, app.routing.ts**
+  - **authHelper.ts**
+  - **site.css**
+  - **main.ts**
 
-11. Select **app** folder, add the following new files into **app** folder.
-
-   - app.component.template.html , app.component.ts
-
-
-   -  login.component.template.html , login.component.ts
-   -  app.module.ts, app.routing.ts
-   -  authHelper.ts
-   -  site.css
-   -  main.ts
 
 12. Open **app.component.template.html** file, delete all code and add the following code into it.
 
