@@ -153,33 +153,33 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 10. Open **site.css** file, delete all code and add the following code into it.
 
-  ```style
-  html{height:100%;}
-  body {padding-top: 50px;padding-bottom: 20px;background-repeat: no-repeat;background-size: 100% 100%;height:100%;}
-  .body-content {padding-left: 15px;padding-right: 15px;height:100%;}
-  .containerbg{height:100%;}
-  .loginbody{margin:auto;padding:110px 15px 0 15px;max-width:1200px;}
-  .loginbody > .row{padding:0 20px 0 65px;}
-  #loginForm a{color:#4B67F8;font-size:16px;}
-  .navbar-inverse{background-color:#127605;border-color:#127605;}
-  .navbar-inverse .navbar-brand, 
-  .navbar-inverse .navbar-nav > li > a {color:white;}
-  .navbar-inverse .navbar-brand{font-size:14px}
-  .container>div.row{height:auto;background-color:#fff;}
-  .container.body-content{height:100%; background-color:#fff;}
-  .navbar-right a{color:white;text-decoration:none;}
-  .userinfo .caret{color:white;font-size:20px;}
-  .transformcaret{transform: rotate(180deg);}
-  .userinfo{height:50px;line-height:50px;}
-  .popupcontainer{display:none;}
-  .navbar-collapse{position:relative;}
-  .popuserinfo{position:absolute;top:40px;z-index:999;background-color:white;padding:15px 0;width:200px;border:1px solid #dedede;box-sizing: border-box;left:955px;}
-  .subitem{float:left;width:100%;}
-  .subitem a{color:black;text-decoration:none;width:100%;height:100%;display:block;padding:10px 0 10px 20px;}
-  .subitem:hover{background-color:#127605;color:white;}
-  .subitem a:hover{color:white;}
-  .container {width: 1170px;}
-  ```
+    ```css
+   html{height:100%;}
+   body {padding-top: 50px;padding-bottom: 20px;background-repeat: no-repeat;background-size: 100% 100%;height:100%;}
+   .body-content {padding-left: 15px;padding-right: 15px;height:100%;}
+   .containerbg{height:100%;}
+   .loginbody{margin:auto;padding:110px 15px 0 15px;max-width:1200px;}
+   .loginbody > .row{padding:0 20px 0 65px;}
+   #loginForm a{color:#4B67F8;font-size:16px;}
+   .navbar-inverse{background-color:#127605;border-color:#127605;}
+   .navbar-inverse .navbar-brand, 
+   .navbar-inverse .navbar-nav > li > a {color:white;}
+   .navbar-inverse .navbar-brand{font-size:14px}
+   .container>div.row{height:auto;background-color:#fff;}
+   .container.body-content{height:100%; background-color:#fff;}
+   .navbar-right a{color:white;text-decoration:none;}
+   .userinfo .caret{color:white;font-size:20px;}
+   .transformcaret{transform: rotate(180deg);}
+   .userinfo{height:50px;line-height:50px;}
+   .popupcontainer{display:none;}
+   .navbar-collapse{position:relative;}
+   .popuserinfo{position:absolute;top:40px;z-index:999;background-color:white;padding:15px 0;width:200px;border:1px solid #dedede;box-sizing: border-box;left:955px;}
+   .subitem{float:left;width:100%;}
+   .subitem a{color:black;text-decoration:none;width:100%;height:100%;display:block;padding:10px 0 10px 20px;}
+   .subitem:hover{background-color:#127605;color:white;}
+   .subitem a:hover{color:white;}
+   .container {width: 1170px;}
+    ```
 
 11. Open **application.css** file, delete all code and add the following code into it.
 
