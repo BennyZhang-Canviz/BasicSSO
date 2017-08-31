@@ -176,6 +176,11 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
 
 10. Select **app** folder, add the following new files into **app** folder.
 
+  - **Typings** ,  **Scripts** ,  **public** and **Views** folders
+  - **routes/index.ts** ,  **routes/user.ts** files
+  - **typings.json** file
+  - **README.md** file
+
   - **app.component.template.html** ,  **app.component.ts** 
   - **login.component.template.html** ,  **login.component.ts**
   - **app.module.ts**, **app.routing.ts**
