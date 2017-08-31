@@ -172,7 +172,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
    - **typings.json** file
    - **README.md** file
 
-9. Select **BasicSSO**, add a new folder named **app**
+9. Select **BasicSSO**, add a new folder named **app**.
 
 10. Select **app** folder, add the following new files into **app** folder.
 
