@@ -3,6 +3,8 @@
 
 In this sample we show you how to integrate Azure Active Directory(Azure AD) to provide secure sign in and authorization. 
 
+The code in the following sections is part of the full featured Python app and presented as a new project for clarity and separation of functionality.
+
 **Table of contents**
 * [Register the application in Azure Active Directory](#register-the-application-in-azure-active-directory)
 * [Build and debug locally](#build-and-debug-locally)
