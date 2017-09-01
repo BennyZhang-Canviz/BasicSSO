@@ -87,14 +87,14 @@ Make sure that Django can run on local machine. Otherwise following [this articl
    - **CLIENT_ID**: use the Client Id of the app registration you created earlier.
    - **CLIENT_SECRET**: use the Key value of the app registration you created earlier.
 
-​           ![proj01](Images/proj01.png)
+     ​	  ![proj01](Images/proj01.png)
 
 2.  Create a new folder named **templates** under **account** folder, and then create a new folder named **account** under **templates** folder. Under new created account folder create two files named **index.html** and **helloworld.html**.
 
-   ​    ![proj02](Images/proj02.png)
+   ​	 ![proj02](Images/proj02.png)
 
-Edit **index.html**,  delete all code and copy the following code to paste.
-
+   Edit **index.html**,  delete all code and copy the following code to paste.
+   ```python
     <!DOCTYPE html>
     <html>
     <head>
@@ -116,8 +116,9 @@ Edit **index.html**,  delete all code and copy the following code to paste.
     	</form>
     </body>
     </html>
-Edit **helloworld.html**, delete all code and copy the following code to paste.
-
+   ```
+   Edit **helloworld.html**, delete all code and copy the following code to paste.
+   ```python
     <!DOCTYPE html>
     <html>
     <head>
@@ -131,6 +132,7 @@ Edit **helloworld.html**, delete all code and copy the following code to paste.
        <h1> Hello world!</h1>
     </body>
     </html>
+   ```
 3. Open **/account/views.py**, delete all code and copy the following code to paste.
 
 
@@ -184,11 +186,12 @@ def logoff(request):
 
    ![proj03](Images/proj03.png)
 
-In the same file, comment **'django.middleware.csrf.CsrfViewMiddleware',** inside **MIDDLEWARE**.
+   In the same file, comment **'django.middleware.csrf.CsrfViewMiddleware',** inside **MIDDLEWARE**.
 
 ​     ![proj04](Images/proj04.png)
 
 In the same file, edit **TEMPLATES** as below.
+
 
 
 	TEMPLATES = [
