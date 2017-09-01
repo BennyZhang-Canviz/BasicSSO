@@ -2,6 +2,8 @@
 
 In this sample we show you how to integrate Azure Active Directory(Azure AD) to provide secure sign in and authorization. 
 
+The code in the following sections is part of the full featured Angular app and presented as a new project for clarity and separation of functionality.
+
 **Table of contents**
 * [Register the application in Azure Active Directory](#register-the-application-in-azure-active-directory)
 * [Prerequisites](#prerequisites)
@@ -633,23 +635,15 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-26. Select **BasicSSO** project, add the a new folder named **ssl** into it.
+26. Right-click project,  **Add ->New Folder** named **services**.
 
-27. Copy the following files of **[ssl](ssl/)** folder into **ssl** folder that just created above step, and include these files into project, about certificate, you can reference this [link](https://github.com/leeroybrun/node-express-https).
-
-    - **sssl/cert.pem**
-    - **ssl/csr.pem**
-    - **ssl/key.pem**
-
-28. Right-click project,  **Add ->New Folder** named **services**.
-
-29. Right-click **services** folder,  add the following new files into it.
+27. Right-click **services** folder,  add the following new files into it.
 
     - **appAuth.ts**
     - **dbContext.ts**
     - **tokenCacheService.ts**
 
-30. Open **dbContext.ts** file, delete all code and add the following code into it to create token cache table.
+28. Open **dbContext.ts** file, delete all code and add the following code into it to create token cache table.
 
     ```typescript
     import * as Sequelize from 'sequelize';
@@ -697,7 +691,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-31. Open **tokenCacheService.ts** file, delete all code and add the following code into it to create/update/delete token cache.
+29. Open **tokenCacheService.ts** file, delete all code and add the following code into it to create/update/delete token cache.
 
     ```typescript
     import { DbContext, TokenCacheInstance } from '../services/dbContext';
@@ -757,7 +751,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }
     ```
 
-32. Open **appAuth.ts** file, delete all code and add the following code into it to authentication.
+30. Open **appAuth.ts** file, delete all code and add the following code into it to authentication.
 
     ```typescript
     var express = require("express");
@@ -870,9 +864,9 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     }    
     ```
 
-33. Right click **routes** folder, add a new file named **me.ts**.
+31. Right click **routes** folder, add a new file named **me.ts**.
 
-34. Add the following code to **me.ts** file to authentication.
+32. Add the following code to **me.ts** file to authentication.
     ```typescript
     import express = require('express');
 
@@ -891,7 +885,7 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
     export = router;
     ```
 
-35. Open **app.ts** file, delete all code and copy the following code into it.
+33. Open **app.ts** file, delete all code and copy the following code into it.
 
     ```typescript
     import { appAuth } from './services/appAuth';
@@ -991,6 +985,14 @@ In this sample we show you how to integrate Azure Active Directory(Azure AD) to 
         });
     }
     ```
+
+34. Select **BasicSSO** project, add the a new folder named **ssl** into it.
+
+35. Reference [link](https://github.com/leeroybrun/node-express-https) to generate the following certificate files, copy these files into **ssl** folder that just created above step and include these files into project.
+
+    - **cert.pem**
+    - **csr.pem**
+    - **key.pem**
 
 36. Select Project file, click right key and select **Properties**, 
 
